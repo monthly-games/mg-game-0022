@@ -1,0 +1,230 @@
+{
+  "version": "0.1.0",
+  "minigames": [
+    {
+      "game_id": "mg_001",
+      "name": "점프 마스터",
+      "category": "reflex",
+      "unlock_level": 1,
+      "description": "타이밍에 맞춰 장애물을 점프로 피하기",
+      "duration_seconds": 60,
+      "difficulty_tiers": {
+        "easy": { "obstacle_speed": 1.0, "spawn_rate": 1.0 },
+        "normal": { "obstacle_speed": 1.5, "spawn_rate": 1.3 },
+        "hard": { "obstacle_speed": 2.0, "spawn_rate": 1.6 },
+        "extreme": { "obstacle_speed": 2.5, "spawn_rate": 2.0 }
+      },
+      "star_requirements": {
+        "1_star": { "score": 100 },
+        "2_star": { "score": 300 },
+        "3_star": { "score": 500 }
+      }
+    },
+    {
+      "game_id": "mg_002",
+      "name": "컬러 매치",
+      "category": "puzzle",
+      "unlock_level": 5,
+      "description": "같은 색깔 블록 3개 이상 매치",
+      "duration_seconds": 90,
+      "difficulty_tiers": {
+        "easy": { "colors": 3, "target_score": 1000 },
+        "normal": { "colors": 4, "target_score": 2000 },
+        "hard": { "colors": 5, "target_score": 3500 },
+        "extreme": { "colors": 6, "target_score": 5000 }
+      },
+      "star_requirements": {
+        "1_star": { "score": 1000 },
+        "2_star": { "score": 2500 },
+        "3_star": { "score": 4000 }
+      }
+    },
+    {
+      "game_id": "mg_003",
+      "name": "메모리 챌린지",
+      "category": "memory",
+      "unlock_level": 10,
+      "description": "카드를 뒤집어 같은 그림 찾기",
+      "duration_seconds": 120,
+      "difficulty_tiers": {
+        "easy": { "cards": 12, "time_limit": 120 },
+        "normal": { "cards": 16, "time_limit": 100 },
+        "hard": { "cards": 20, "time_limit": 90 },
+        "extreme": { "cards": 24, "time_limit": 80 }
+      },
+      "star_requirements": {
+        "1_star": { "pairs_found": 6 },
+        "2_star": { "pairs_found": 9 },
+        "3_star": { "pairs_found": 12, "time_bonus": true }
+      }
+    },
+    {
+      "game_id": "mg_004",
+      "name": "타워 스택",
+      "category": "strategy",
+      "unlock_level": 15,
+      "description": "블록을 쌓아 타워 건설",
+      "duration_seconds": 90,
+      "difficulty_tiers": {
+        "easy": { "block_speed": 1.0, "target_height": 10 },
+        "normal": { "block_speed": 1.3, "target_height": 15 },
+        "hard": { "block_speed": 1.6, "target_height": 20 },
+        "extreme": { "block_speed": 2.0, "target_height": 25 }
+      },
+      "star_requirements": {
+        "1_star": { "height": 10 },
+        "2_star": { "height": 15 },
+        "3_star": { "height": 20, "perfect_stacks": 5 }
+      }
+    },
+    {
+      "game_id": "mg_005",
+      "name": "리듬 비트",
+      "category": "rhythm",
+      "unlock_level": 20,
+      "description": "음악에 맞춰 버튼 터치",
+      "duration_seconds": 120,
+      "difficulty_tiers": {
+        "easy": { "bpm": 60, "notes": 50 },
+        "normal": { "bpm": 90, "notes": 80 },
+        "hard": { "bpm": 120, "notes": 120 },
+        "extreme": { "bpm": 150, "notes": 200 }
+      },
+      "star_requirements": {
+        "1_star": { "accuracy": 60 },
+        "2_star": { "accuracy": 80 },
+        "3_star": { "accuracy": 95, "combo": 50 }
+      }
+    }
+  ],
+  "event_minigames": {
+    "rotation_schedule": "weekly",
+    "examples": [
+      {
+        "event_id": "holiday_rush",
+        "name": "홀리데이 러시",
+        "theme": "겨울/크리스마스",
+        "duration_days": 7,
+        "exclusive_mechanics": "눈사람 피하기, 선물 수집",
+        "special_rewards": {
+          "event_currency": true,
+          "themed_monsters": true,
+          "limited_skins": true
+        }
+      },
+      {
+        "event_id": "summer_splash",
+        "name": "여름 스플래시",
+        "theme": "여름/해변",
+        "duration_days": 14,
+        "exclusive_mechanics": "파도 타기, 수박 자르기",
+        "special_rewards": {
+          "event_currency": true,
+          "beach_themed_content": true
+        }
+      }
+    ]
+  },
+  "monster_progression": {
+    "level_milestones": [
+      {
+        "level": 1,
+        "unlocks": ["미니게임: 점프 마스터", "기본 몬스터"]
+      },
+      {
+        "level": 5,
+        "unlocks": ["미니게임: 컬러 매치", "진화 시스템"]
+      },
+      {
+        "level": 10,
+        "unlocks": ["미니게임: 메모리 챌린지", "파티 모드: Co-op"]
+      },
+      {
+        "level": 15,
+        "unlocks": ["미니게임: 타워 스택", "파티 모드: Versus"]
+      },
+      {
+        "level": 20,
+        "unlocks": ["미니게임: 리듬 비트", "파티 모드: Relay"]
+      },
+      {
+        "level": 30,
+        "unlocks": ["라이브 이벤트", "파티 모드: Tournament"]
+      },
+      {
+        "level": 50,
+        "unlocks": ["레어 몬스터 가챠", "하드 난이도"]
+      },
+      {
+        "level": 100,
+        "unlocks": ["에픽 몬스터 가챠", "익스트림 난이도"]
+      }
+    ],
+    "evolution_requirements": [
+      {
+        "stage": 1,
+        "level_required": 10,
+        "materials": { "common_essence": 5 },
+        "gold": 1000
+      },
+      {
+        "stage": 2,
+        "level_required": 30,
+        "materials": { "common_essence": 10, "rare_essence": 5 },
+        "gold": 5000
+      },
+      {
+        "stage": 3,
+        "level_required": 60,
+        "materials": { "rare_essence": 10, "epic_essence": 5 },
+        "gold": 20000
+      },
+      {
+        "stage": 4,
+        "level_required": 100,
+        "materials": { "epic_essence": 10, "legendary_essence": 3 },
+        "gold": 100000
+      }
+    ]
+  },
+  "party_modes": {
+    "co-op": {
+      "unlock_level": 10,
+      "max_players": 4,
+      "game_selection": "rotating minigames",
+      "rewards": {
+        "participation": { "coins": 200, "exp": 50 },
+        "victory": { "coins": 500, "exp": 150, "materials": "random" }
+      }
+    },
+    "versus": {
+      "unlock_level": 15,
+      "max_players": 4,
+      "game_selection": "player vote",
+      "rewards": {
+        "1st": { "coins": 800, "exp": 200, "diamonds": 20 },
+        "2nd": { "coins": 500, "exp": 100, "diamonds": 10 },
+        "3rd": { "coins": 300, "exp": 50 },
+        "4th": { "coins": 100, "exp": 20 }
+      }
+    },
+    "tournament": {
+      "unlock_level": 30,
+      "max_players": 16,
+      "format": "bracket elimination",
+      "entry_fee": { "currency": "diamonds", "amount": 100 },
+      "rewards": {
+        "champion": { "diamonds": 1000, "legendary_monster": 1, "exclusive_title": true },
+        "runner_up": { "diamonds": 500, "epic_monster": 1 },
+        "top_4": { "diamonds": 200, "rare_materials": 10 },
+        "participation": { "coins": 1000 }
+      }
+    }
+  },
+  "difficulty_scaling": {
+    "easy_to_normal": 1.5,
+    "normal_to_hard": 2.0,
+    "hard_to_extreme": 3.0,
+    "reward_multiplier_per_difficulty": "same as difficulty multiplier"
+  }
+}

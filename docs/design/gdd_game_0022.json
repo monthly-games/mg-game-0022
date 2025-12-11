@@ -1,0 +1,221 @@
+{
+  "meta": {
+    "game_id": "game_0022",
+    "code_name": "MG-0022",
+    "title_kr": "몬스터 레벨업 파티",
+    "title_en": "Monster Level-Up Party",
+    "version": "0.1.0",
+    "last_updated": "2026-04-01"
+  },
+  "overview": {
+    "genre_tags": ["minigames", "idle", "party", "casual"],
+    "target_audience": {
+      "age": "10-35",
+      "region": ["KR", "SEA", "Global"],
+      "play_style": "hyper-casual to casual"
+    },
+    "core_loop": "다양한 미니게임을 플레이하여 몬스터를 성장시키고, 방치 수익으로 추가 성장하며, 더 많은 미니게임을 해금한다",
+    "unique_selling_point": "빠르게 즐길 수 있는 다양한 미니게임과 방치 성장의 조화, 라이브 이벤트 플랫폼",
+    "year_2_role": "라이브 이벤트용 미니게임 플랫폼 실험"
+  },
+  "gameplay": {
+    "core_mechanics": [
+      {
+        "name": "미니게임 플레이",
+        "description": "30초~2분 분량의 간단하고 다양한 미니게임"
+      },
+      {
+        "name": "몬스터 육성",
+        "description": "미니게임 보상으로 몬스터 레벨업 및 진화"
+      },
+      {
+        "name": "방치 수익",
+        "description": "오프라인 시간 동안 자동으로 경험치와 자원 획득"
+      },
+      {
+        "name": "파티 시스템",
+        "description": "친구들과 함께 미니게임 플레이, 경쟁 및 협동"
+      },
+      {
+        "name": "라이브 이벤트",
+        "description": "정기적으로 새로운 미니게임과 테마 이벤트 추가"
+      }
+    ],
+    "progression": {
+      "type": "level_based",
+      "description": "몬스터 레벨업을 통한 새로운 미니게임 및 기능 해금"
+    },
+    "session_length": "1-5분 (미니게임 1-3개)"
+  },
+  "minigame_system": {
+    "categories": [
+      {
+        "category": "reflex",
+        "name": "반사신경",
+        "examples": ["타이밍 점프", "빠른 탭", "피하기"],
+        "difficulty": "easy to hard"
+      },
+      {
+        "category": "puzzle",
+        "name": "퍼즐",
+        "examples": ["매치3", "블록 맞추기", "색깔 정렬"],
+        "difficulty": "medium"
+      },
+      {
+        "category": "memory",
+        "name": "기억력",
+        "examples": ["카드 맞추기", "순서 기억", "패턴 반복"],
+        "difficulty": "medium to hard"
+      },
+      {
+        "category": "strategy",
+        "name": "전략",
+        "examples": ["타워 쌓기", "자원 관리", "경로 찾기"],
+        "difficulty": "hard"
+      },
+      {
+        "category": "rhythm",
+        "name": "리듬",
+        "examples": ["박자 맞추기", "음악 게임", "댄스"],
+        "difficulty": "medium to hard"
+      }
+    ],
+    "minigame_structure": {
+      "duration": "30초 ~ 2분",
+      "difficulty_tiers": ["easy", "normal", "hard", "extreme"],
+      "rewards": {
+        "participation": "base exp + coins",
+        "performance_based": "star rating (1-3 stars)",
+        "perfect_clear": "bonus rewards + achievement"
+      }
+    },
+    "live_event_games": {
+      "description": "기간 한정 특별 미니게임",
+      "rotation": "weekly or bi-weekly",
+      "theme": "seasonal, holiday, collab",
+      "exclusive_rewards": true
+    }
+  },
+  "monster_system": {
+    "monster_types": [
+      {
+        "type": "starter",
+        "name": "초보 몬스터",
+        "unlock": "default",
+        "max_level": 100,
+        "evolution_stages": 3
+      },
+      {
+        "type": "rare",
+        "name": "레어 몬스터",
+        "unlock": "level 20 or gacha",
+        "max_level": 150,
+        "evolution_stages": 4
+      },
+      {
+        "type": "epic",
+        "name": "에픽 몬스터",
+        "unlock": "level 50 or gacha",
+        "max_level": 200,
+        "evolution_stages": 5
+      },
+      {
+        "type": "legendary",
+        "name": "전설 몬스터",
+        "unlock": "gacha or special event",
+        "max_level": 300,
+        "evolution_stages": 6,
+        "special_abilities": true
+      }
+    ],
+    "growth_system": {
+      "exp_sources": ["minigame clear", "idle income", "quests"],
+      "evolution": {
+        "requirements": ["level threshold", "evolution materials", "gold"],
+        "benefits": ["stat boost", "new appearance", "ability unlock"]
+      },
+      "stats": ["hp", "attack", "speed", "luck"],
+      "abilities": {
+        "passive": "permanent buffs",
+        "active": "usable in specific minigames"
+      }
+    }
+  },
+  "party_system": {
+    "party_modes": [
+      {
+        "mode": "co-op",
+        "description": "친구들과 협동하여 미니게임 클리어",
+        "max_players": 4,
+        "rewards": "shared + individual"
+      },
+      {
+        "mode": "versus",
+        "description": "실시간 대결",
+        "max_players": 4,
+        "rewards": "ranking-based"
+      },
+      {
+        "mode": "relay",
+        "description": "순서대로 미니게임 릴레이",
+        "max_players": 8,
+        "rewards": "team-based"
+      },
+      {
+        "mode": "tournament",
+        "description": "토너먼트 방식 경쟁",
+        "max_players": 16,
+        "rewards": "top rankers get premium rewards"
+      }
+    ],
+    "social_features": ["friend list", "party invite", "chat", "leaderboard", "gift exchange"]
+  },
+  "economy": {
+    "currencies": [
+      {
+        "name": "코인",
+        "type": "soft",
+        "sources": ["미니게임", "방치 수익", "퀘스트"],
+        "sinks": ["몬스터 강화", "진화 재료", "상점"]
+      },
+      {
+        "name": "파티 티켓",
+        "type": "energy",
+        "sources": ["시간 회복", "코인 구매", "광고"],
+        "sinks": ["미니게임 입장", "파티 모드"]
+      },
+      {
+        "name": "다이아",
+        "type": "hard",
+        "sources": ["인앱 구매", "업적", "이벤트"],
+        "sinks": ["가챠", "프리미엄 아이템", "시간 단축"]
+      }
+    ],
+    "monetization": {
+      "model": "F2P + IAP + Ads",
+      "iap_items": ["다이아 패키지", "월정액", "이벤트 패스", "스타터 팩"],
+      "ad_placements": ["보상형 광고 (티켓, 보상 2배)", "선택형 광고 (부활, 힌트)"]
+    }
+  },
+  "technical": {
+    "platform": ["Android", "iOS", "Web"],
+    "engine": "Flutter + Flame",
+    "backend": "Firebase + Live Event Server",
+    "analytics": "GA4 + BigQuery + Event Performance Tracker",
+    "multiplayer": "Real-time (party modes) + Asynchronous (leaderboards)"
+  },
+  "common_modules": {
+    "minigame_platform": {
+      "description": "범용 미니게임 플랫폼 프레임워크",
+      "features": ["게임 로더", "스코어 시스템", "난이도 조절", "이벤트 스케줄러"]
+    },
+    "live_event_system": {
+      "description": "라이브 이벤트 관리 시스템",
+      "features": ["이벤트 스케줄링", "콘텐츠 핫 로딩", "A/B 테스팅", "성과 분석"]
+    },
+    "party_framework": {
+      "description": "멀티플레이어 파티 시스템",
+      "features": ["매칭", "실시간 동기화", "리플레이", "리더보드"]
+    }
+  }
+}

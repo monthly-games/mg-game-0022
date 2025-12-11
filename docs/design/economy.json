@@ -1,0 +1,158 @@
+{
+  "version": "0.1.0",
+  "currencies": {
+    "coins": {
+      "display_name": "코인",
+      "icon": "assets/icons/coin.png",
+      "initial_amount": 5000,
+      "sources": {
+        "minigame_clear": {
+          "1_star": 50,
+          "2_star": 100,
+          "3_star": 200
+        },
+        "idle_income": {
+          "base_per_hour": 100,
+          "monster_level_multiplier": 1.05,
+          "max_accumulation_hours": 8
+        },
+        "daily_quest": 1000,
+        "achievement": "varied"
+      },
+      "sinks": {
+        "monster_level_up": {
+          "base_cost": 100,
+          "level_multiplier": 1.3
+        },
+        "evolution_materials": {
+          "common": 500,
+          "rare": 2000,
+          "epic": 5000
+        },
+        "shop_items": "varied"
+      }
+    },
+    "party_tickets": {
+      "display_name": "파티 티켓",
+      "icon": "assets/icons/ticket.png",
+      "max_amount": 10,
+      "regen_minutes": 30,
+      "sources": {
+        "time_regen": "1 per 30min",
+        "coin_purchase": {
+          "cost": 100,
+          "amount": 1
+        },
+        "ad_watch": {
+          "amount": 1,
+          "cooldown_minutes": 60
+        },
+        "daily_login": 5
+      },
+      "sinks": {
+        "minigame_entry": 1,
+        "party_mode": 2,
+        "event_game": 3
+      }
+    },
+    "diamonds": {
+      "display_name": "다이아",
+      "icon": "assets/icons/diamond.png",
+      "initial_amount": 200,
+      "iap_packages": [
+        { "diamonds": 100, "price_usd": 0.99 },
+        { "diamonds": 550, "price_usd": 4.99, "bonus": 50 },
+        { "diamonds": 1300, "price_usd": 9.99, "bonus": 200 },
+        { "diamonds": 3300, "price_usd": 19.99, "bonus": 600 },
+        { "diamonds": 8500, "price_usd": 49.99, "bonus": 2000 }
+      ],
+      "sources": {
+        "achievement": "varied",
+        "event": "varied",
+        "perfect_clear": 10
+      },
+      "sinks": {
+        "gacha_pull": 300,
+        "gacha_10x": 2700,
+        "continue_game": 50,
+        "speed_up": "10-100",
+        "premium_skins": "500-2000"
+      }
+    }
+  },
+  "gacha": {
+    "monster_gacha": {
+      "cost": { "currency": "diamonds", "amount": 300 },
+      "ten_pull_cost": { "currency": "diamonds", "amount": 2700 },
+      "rates": {
+        "legendary": 0.02,
+        "epic": 0.08,
+        "rare": 0.30,
+        "common": 0.60
+      },
+      "pity_system": {
+        "legendary_pity": 100,
+        "epic_pity": 10
+      }
+    }
+  },
+  "idle_income": {
+    "base_rate": 100,
+    "multipliers": {
+      "monster_level": "1.05x per level",
+      "evolution_stage": "1.5x per evolution",
+      "vip_status": "1.2x - 2.0x"
+    },
+    "max_offline_hours": 8,
+    "boost_options": {
+      "ad_watch": "2x for 1 hour",
+      "diamond_purchase": "3x for 4 hours"
+    }
+  },
+  "minigame_rewards": {
+    "star_system": {
+      "1_star": {
+        "coins": 50,
+        "exp": 10
+      },
+      "2_star": {
+        "coins": 100,
+        "exp": 25
+      },
+      "3_star": {
+        "coins": 200,
+        "exp": 50,
+        "bonus": "evolution material chance"
+      }
+    },
+    "difficulty_multiplier": {
+      "easy": 1.0,
+      "normal": 1.5,
+      "hard": 2.0,
+      "extreme": 3.0
+    },
+    "first_clear_bonus": {
+      "diamonds": 20,
+      "coins": 500
+    }
+  },
+  "vip_system": {
+    "levels": [
+      { "level": 1, "total_purchase_usd": 0.99, "benefits": ["idle +20%", "gacha +5% rare"] },
+      { "level": 2, "total_purchase_usd": 9.99, "benefits": ["idle +40%", "gacha +10% rare", "daily diamonds +10"] },
+      { "level": 3, "total_purchase_usd": 49.99, "benefits": ["idle +60%", "gacha +15% rare", "daily diamonds +30"] },
+      { "level": 4, "total_purchase_usd": 99.99, "benefits": ["idle +100%", "gacha +20% rare", "daily diamonds +50", "exclusive monsters"] }
+    ]
+  },
+  "event_pass": {
+    "free_track": {
+      "rewards": ["coins", "tickets", "basic materials"]
+    },
+    "premium_track": {
+      "cost": { "currency": "diamonds", "amount": 1000 },
+      "exclusive_rewards": ["legendary monster", "premium skins", "diamonds", "epic materials"]
+    },
+    "duration_days": 30,
+    "tiers": 50
+  }
+}

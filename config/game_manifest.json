@@ -1,0 +1,14 @@
+{
+  "game_id": "game_0022",
+  "code_name": "MG-0022",
+  "title_kr": "몬스터 레벨업 파티",
+  "title_en": "Monster Level-Up Party",
+  "genre_tags": ["minigames", "idle", "party", "casual"],
+  "target_region": ["KR", "SEA", "Global"],
+  "engine_version": "1.0.0",
+  "analytics_profile": "default_v1",
+  "created_at": "2026-04-01",
+  "status": "development",
+  "year": 2,
+  "role": "라이브 이벤트용 미니게임 플랫폼 실험"
+}
