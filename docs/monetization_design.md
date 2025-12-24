@@ -1,4 +1,13 @@
-# game_0022 수익화 전략 - 몬스터 레벨업 파티
+﻿# game_0022 수익화 전략 - 몬스터 레벨업 파티
+
+> game_id: game_0022
+> repo: mg-game-0022
+> title_kr: 몬스터 레벨업 파티
+> title_en: Monster Level-Up Party
+> genre_tags: minigames, idle, party, casual
+> doc_type: monetization_design
+> source_of_truth: docs/design/gdd_game_0022.json
+> last_updated: 2025-12-19
 
 ## 게임 개요
 - **장르**: 몬스터 육성 + 파티 빌딩 + JRPG
