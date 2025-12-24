@@ -24,7 +24,9 @@ void main() {
       expect(state.tickets, 4);
 
       // Consume all
-      for (int i = 0; i < 5; i++) state.consumeTicket();
+      for (int i = 0; i < 5; i++) {
+        state.consumeTicket();
+      }
       expect(state.tickets, 0); // clamped at 0 essentially by check
     });
 

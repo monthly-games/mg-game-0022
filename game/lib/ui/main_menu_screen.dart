@@ -9,7 +9,6 @@ import '../features/minigames/button_masher/button_masher_game.dart';
 import '../features/minigames/catch_game/catch_game.dart';
 import '../features/minigames/memory_game/memory_game.dart';
 import 'result_screen.dart';
-import 'shop_screen.dart';
 import 'settings_screen.dart';
 import 'inventory_screen.dart';
 import 'widgets/monster_display.dart';
@@ -225,7 +224,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
     late MiniGameBase game;
 
-    final onGameOver = () {
+    void onGameOver() {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) =>
@@ -239,7 +238,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       if (gameType == 2) gameId = 'memory_game';
 
       gameState.updateHighScore(gameId, game.getScore());
-    };
+    }
 
     switch (gameType) {
       case 0:

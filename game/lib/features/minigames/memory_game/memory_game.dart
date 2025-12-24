@@ -9,8 +9,8 @@ import '../minigame_base.dart';
 class MemoryGame extends MiniGameBase with TapDetector {
   final VoidCallback onGameOver;
   int _level = 1;
-  List<int> _sequence = [];
-  List<int> _playerInput = [];
+  final List<int> _sequence = [];
+  final List<int> _playerInput = [];
   bool _isPlayerTurn = false;
 
   late List<ColorButton> _buttons;

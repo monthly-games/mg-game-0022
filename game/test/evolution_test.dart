@@ -6,16 +6,16 @@ void main() {
   group('Monster Evolution Tests', () {
     test('Evolution Constraints', () {
       // Level 1 Monster
-      final monster = Monster(id: '1', name: 'Slime');
+      const monster = Monster(id: '1', name: 'Slime');
       expect(monster.canEvolve, false);
 
       // Level 20 Monster
-      final lv20 = Monster(id: '1', name: 'Slime', level: 20);
+      const lv20 = Monster(id: '1', name: 'Slime', level: 20);
       expect(lv20.canEvolve, true);
     });
 
     test('Evolution Logic', () {
-      final monster = Monster(
+      const monster = Monster(
         id: '1',
         name: 'Slime',
         speciesName: 'Slime',

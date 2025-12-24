@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:mg_common_game/core/audio/audio_manager.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

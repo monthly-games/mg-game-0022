@@ -12,7 +12,7 @@ void main() {
     });
 
     test('Monster persistence saves stats and traits', () {
-      final monster = Monster(
+      const monster = Monster(
         id: 'm2',
         name: 'StrongBlob',
         stats: {'STR': 10, 'AGI': 5, 'INT': 2},
@@ -32,7 +32,7 @@ void main() {
       // This test might need adjustment based on implementation detail,
       // but let's define the expectation: Evolution shouldn't LOSE stats.
 
-      final base = Monster(
+      const base = Monster(
         id: 'm3',
         name: 'Poke',
         level: 20,
