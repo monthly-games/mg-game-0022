@@ -125,7 +125,7 @@ import 'package:mg_common_game/core/ui/widgets/progress/mg_progress.dart';
 
 ### HUD 사용 가이드
 
-전체 HUD 컴포넌트 사용법은 [MG_HUD_COMPONENT_GUIDE.md](../../MG_HUD_COMPONENT_GUIDE.md)를 참고하세요.
+전체 HUD 컴포넌트 사용법은 [MG_HUD_COMPONENT_GUIDE.md](../mg-meta/MG_HUD_COMPONENT_GUIDE.md)를 참고하세요.
 
 리듬/미니게임 HUD 예제는 가이드 문서의 "Rhythm Game" 섹션을 참고하세요.
 
