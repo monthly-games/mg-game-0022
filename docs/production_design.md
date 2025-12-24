@@ -329,3 +329,4 @@ int idleReward(Monster monster, Duration offline) {
 ---
 
 *마지막 업데이트: 2025-12-19*
+
