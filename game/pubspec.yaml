@@ -16,7 +16,7 @@ dependencies:
   provider: ^6.1.1
   shared_preferences: ^2.2.2
   mg_common_game:
-    path: ../../mg-common-game
+    path: ../libs/mg_common_game
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
