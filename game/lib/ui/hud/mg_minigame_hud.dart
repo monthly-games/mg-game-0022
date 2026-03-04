@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
 import 'package:mg_common_game/core/ui/typography/mg_text_styles.dart';
-import 'package:mg_common_game/core/ui/widgets/buttons/mg_icon_button.dart';
-import 'package:mg_common_game/core/ui/widgets/progress/mg_linear_progress.dart';
+import 'package:mg_common_game/core/ui/widgets/buttons/mg_button.dart';
+import 'package:mg_common_game/core/ui/widgets/progress/mg_progress.dart';
 
 /// MG-0022 Monster Party Minigame HUD
 /// 미니게임용 HUD - 점수, 시간, 콤보, 목표 표시
@@ -166,13 +166,13 @@ class MGMinigameHud extends StatelessWidget {
 
     if (combo >= 20) {
       comboColor = Colors.purpleAccent;
-      comboStyle = MGTextStyles.displayLarge;
+      comboStyle = MGTextStyles.display;
     } else if (combo >= 10) {
       comboColor = Colors.orangeAccent;
-      comboStyle = MGTextStyles.displayMedium;
+      comboStyle = MGTextStyles.display;
     } else if (combo >= 5) {
       comboColor = Colors.yellowAccent;
-      comboStyle = MGTextStyles.displaySmall;
+      comboStyle = MGTextStyles.display;
     } else {
       comboColor = Colors.white;
       comboStyle = MGTextStyles.h3;
