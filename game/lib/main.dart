@@ -3,8 +3,12 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:mg_common_game/core/audio/audio_manager.dart';
 import 'package:mg_common_game/core/ui/theme/app_colors.dart';
+import 'package:mg_common_game/systems/progression/upgrade_manager.dart';
 import 'core/game_state.dart';
 import 'core/managers/save_manager.dart';
+import 'core/managers/mini_game_manager.dart';
+import 'core/managers/progress_manager.dart';
+import 'core/managers/reward_manager.dart';
 import 'ui/main_menu_screen.dart';
 
 void main() async {
@@ -12,19 +16,145 @@ void main() async {
   await _setupDI();
   await GetIt.I<AudioManager>().initialize();
 
-  // Load State
+  // Load saved state
   final saveManager = GetIt.I<SaveManager>();
   final initialState = await saveManager.loadGameState() ?? GameState();
+
+  // Load saved upgrade levels
+  final upgradeManager = GetIt.I<UpgradeManager>();
+  await upgradeManager.loadUpgrades();
+
+  // Apply upgrade effects to RewardManager
+  _applyUpgradeEffects(upgradeManager);
 
   runApp(MonsterPartyApp(initialState: initialState));
 }
 
 Future<void> _setupDI() async {
-  if (!GetIt.I.isRegistered<AudioManager>()) {
-    GetIt.I.registerSingleton<AudioManager>(AudioManager());
+  final di = GetIt.I;
+
+  // Core services
+  if (!di.isRegistered<AudioManager>()) {
+    di.registerSingleton<AudioManager>(AudioManager());
   }
-  if (!GetIt.I.isRegistered<SaveManager>()) {
-    GetIt.I.registerSingleton<SaveManager>(SaveManager());
+  if (!di.isRegistered<SaveManager>()) {
+    di.registerSingleton<SaveManager>(SaveManager());
+  }
+
+  // Hub managers
+  if (!di.isRegistered<MiniGameManager>()) {
+    di.registerSingleton<MiniGameManager>(MiniGameManager());
+  }
+  if (!di.isRegistered<ProgressManager>()) {
+    di.registerSingleton<ProgressManager>(ProgressManager());
+  }
+  if (!di.isRegistered<RewardManager>()) {
+    di.registerSingleton<RewardManager>(RewardManager());
+  }
+
+  // Upgrade system
+  if (!di.isRegistered<UpgradeManager>()) {
+    di.registerSingleton<UpgradeManager>(UpgradeManager());
+    _registerUpgrades(di.get<UpgradeManager>());
+  }
+}
+
+/// Registers 8 upgrades spanning coin boosts, XP multipliers,
+/// ticket capacity, and per-minigame performance buffs.
+void _registerUpgrades(UpgradeManager manager) {
+  manager.registerUpgrade(Upgrade(
+    id: 'coin_boost',
+    name: 'Coin Boost',
+    description: 'Increases coin rewards from all mini-games',
+    maxLevel: 10,
+    baseCost: 100,
+    costMultiplier: 1.5,
+    valuePerLevel: 0.1, // +10% per level
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: 'xp_boost',
+    name: 'XP Boost',
+    description: 'Increases XP rewards from all mini-games',
+    maxLevel: 10,
+    baseCost: 120,
+    costMultiplier: 1.5,
+    valuePerLevel: 0.1, // +10% per level
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: 'ticket_capacity',
+    name: 'Ticket Pouch',
+    description: 'Increases maximum ticket capacity',
+    maxLevel: 5,
+    baseCost: 200,
+    costMultiplier: 2.0,
+    valuePerLevel: 1.0, // +1 max ticket per level
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: 'time_extension',
+    name: 'Time Extension',
+    description: 'Adds bonus seconds to timed mini-games',
+    maxLevel: 5,
+    baseCost: 150,
+    costMultiplier: 1.8,
+    valuePerLevel: 2.0, // +2 seconds per level
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: 'score_multiplier',
+    name: 'Score Multiplier',
+    description: 'Multiplies base score from all games',
+    maxLevel: 8,
+    baseCost: 250,
+    costMultiplier: 1.6,
+    valuePerLevel: 0.05, // +5% per level
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: 'monster_xp_rate',
+    name: 'Monster Training',
+    description: 'Increases monster XP gain rate',
+    maxLevel: 10,
+    baseCost: 80,
+    costMultiplier: 1.4,
+    valuePerLevel: 0.15, // +15% per level
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: 'streak_bonus',
+    name: 'Streak Power',
+    description: 'Increases daily streak bonus rewards',
+    maxLevel: 5,
+    baseCost: 300,
+    costMultiplier: 1.7,
+    valuePerLevel: 0.2, // +20% streak bonus per level
+  ));
+
+  manager.registerUpgrade(Upgrade(
+    id: 'star_threshold',
+    name: 'Star Magnet',
+    description: 'Lowers score thresholds for earning stars',
+    maxLevel: 5,
+    baseCost: 400,
+    costMultiplier: 2.0,
+    valuePerLevel: 0.05, // -5% threshold per level
+  ));
+}
+
+/// Applies current upgrade levels to runtime managers.
+void _applyUpgradeEffects(UpgradeManager upgradeManager) {
+  final rewardManager = GetIt.I<RewardManager>();
+
+  final coinBoost = upgradeManager.getUpgrade('coin_boost');
+  if (coinBoost != null) {
+    rewardManager.setCoinMultiplier(1.0 + coinBoost.currentValue);
+  }
+
+  final xpBoost = upgradeManager.getUpgrade('xp_boost');
+  if (xpBoost != null) {
+    rewardManager.setXpMultiplier(1.0 + xpBoost.currentValue);
   }
 }
 
@@ -36,7 +166,13 @@ class MonsterPartyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => initialState)],
+      providers: [
+        ChangeNotifierProvider(create: (_) => initialState),
+        ChangeNotifierProvider.value(value: GetIt.I<MiniGameManager>()),
+        ChangeNotifierProvider.value(value: GetIt.I<ProgressManager>()),
+        ChangeNotifierProvider.value(value: GetIt.I<RewardManager>()),
+        ChangeNotifierProvider.value(value: GetIt.I<UpgradeManager>()),
+      ],
       child: MaterialApp(
         title: 'Monster Party',
         theme: ThemeData.dark().copyWith(
