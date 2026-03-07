@@ -67,7 +67,7 @@ class MGMinigameHud extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(MGSpacing.sm),
       decoration: BoxDecoration(
-        color: MGColors.surface.withOpacity(0.85),
+        color: MGColors.surface.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(MGSpacing.sm),
         border: Border.all(color: MGColors.border),
       ),
@@ -122,7 +122,7 @@ class MGMinigameHud extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(MGSpacing.sm),
       decoration: BoxDecoration(
-        color: MGColors.surface.withOpacity(0.85),
+        color: MGColors.surface.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(MGSpacing.sm),
         border: Border.all(
           color: isLowTime ? Colors.red : MGColors.border,
@@ -143,7 +143,7 @@ class MGMinigameHud extends StatelessWidget {
           MGLinearProgress(
             value: timeRatio,
             height: 12,
-            backgroundColor: Colors.grey.withOpacity(0.3),
+            backgroundColor: Colors.grey.withValues(alpha: 0.3),
             progressColor: isLowTime ? Colors.red : Colors.cyan,
           ),
           SizedBox(height: MGSpacing.xxs),
@@ -188,15 +188,15 @@ class MGMinigameHud extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              comboColor.withOpacity(0.8),
-              comboColor.withOpacity(0.3),
+              comboColor.withValues(alpha: 0.8),
+              comboColor.withValues(alpha: 0.3),
             ],
           ),
           borderRadius: BorderRadius.circular(MGSpacing.md),
           border: Border.all(color: comboColor, width: 2),
           boxShadow: [
             BoxShadow(
-              color: comboColor.withOpacity(0.5),
+              color: comboColor.withValues(alpha: 0.5),
               blurRadius: 12,
               spreadRadius: 2,
             ),

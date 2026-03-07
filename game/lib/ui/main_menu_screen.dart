@@ -280,7 +280,7 @@ class _StatBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.black45,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.5)),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
       ),
       child: Row(
         children: [

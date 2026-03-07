@@ -117,13 +117,13 @@ class ColorButton extends PositionComponent
       radius: 45,
       anchor: Anchor.center,
       position: size / 2,
-      paint: Paint()..color = baseColor.withOpacity(0.6),
+      paint: Paint()..color = baseColor.withValues(alpha: 0.6),
     );
     add(_circle);
   }
 
   void highlight() {
-    _circle.paint.color = baseColor.withOpacity(1.0);
+    _circle.paint.color = baseColor.withValues(alpha: 1.0);
     // Needed flume/effects import - added in this version
     add(
       ScaleEffect.by(
@@ -133,7 +133,7 @@ class ColorButton extends PositionComponent
     );
 
     Future.delayed(const Duration(milliseconds: 200), () {
-      _circle.paint.color = baseColor.withOpacity(0.6);
+      _circle.paint.color = baseColor.withValues(alpha: 0.6);
     });
   }
 

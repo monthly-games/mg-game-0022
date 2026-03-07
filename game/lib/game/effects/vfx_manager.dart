@@ -19,78 +19,66 @@ class VfxManager extends Component {
   /// Show monster summon effect
   void showMonsterSummon(Vector2 position, Color monsterColor) {
     _addEffect(
-      FlameParticleEffect(
-        position: position.clone(),
-        color: monsterColor,
-        particleCount: 20,
-        duration: 0.6,
-        spreadRadius: 35.0,
-      ),
+      FlameParticleEffect.explosion(
+          position: position.clone(),
+          color: monsterColor,
+          radius: 35.0,
+        ),
     );
   }
 
   /// Show monster attack effect
   void showMonsterAttack(Vector2 position) {
     _addEffect(
-      FlameParticleEffect(
-        position: position.clone(),
-        color: Colors.red,
-        particleCount: 15,
-        duration: 0.4,
-        spreadRadius: 30.0,
-      ),
+      FlameParticleEffect.explosion(
+          position: position.clone(),
+          color: Colors.red,
+          radius: 30.0,
+        ),
     );
   }
 
   /// Show party boost effect
   void showPartyBoost(Vector2 position) {
     _addEffect(
-      FlameParticleEffect(
-        position: position.clone(),
-        color: Colors.purple,
-        particleCount: 25,
-        duration: 0.7,
-        spreadRadius: 45.0,
-      ),
+      FlameParticleEffect.explosion(
+          position: position.clone(),
+          color: Colors.purple,
+          radius: 45.0,
+        ),
     );
   }
 
   /// Show monster level up effect
   void showMonsterLevelUp(Vector2 position) {
     _addEffect(
-      FlameParticleEffect(
-        position: position.clone(),
-        color: Colors.yellow,
-        particleCount: 30,
-        duration: 0.8,
-        spreadRadius: 40.0,
-      ),
+      FlameParticleEffect.explosion(
+          position: position.clone(),
+          color: Colors.yellow,
+          radius: 40.0,
+        ),
     );
   }
 
   /// Show candy collect effect
   void showCandyCollect(Vector2 position) {
     _addEffect(
-      FlameParticleEffect(
-        position: position.clone(),
-        color: Colors.pink,
-        particleCount: 12,
-        duration: 0.4,
-        spreadRadius: 25.0,
-      ),
+      FlameParticleEffect.explosion(
+          position: position.clone(),
+          color: Colors.pink,
+          radius: 25.0,
+        ),
     );
   }
 
   /// Show party celebration effect
   void showPartyCelebration(Vector2 position) {
     _addEffect(
-      FlameParticleEffect(
-        position: position.clone(),
-        color: Colors.amber,
-        particleCount: 40,
-        duration: 1.0,
-        spreadRadius: 60.0,
-      ),
+      FlameParticleEffect.explosion(
+          position: position.clone(),
+          color: Colors.amber,
+          radius: 60.0,
+        ),
     );
   }
 }

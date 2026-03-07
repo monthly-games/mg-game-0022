@@ -14,9 +14,9 @@ class MonsterDisplay extends StatelessWidget {
     Color filterColor = Colors.transparent;
 
     if (monster.evolutionStage == 2) {
-      filterColor = Colors.red.withOpacity(0.3); // Super tint
+      filterColor = Colors.red.withValues(alpha: 0.3); // Super tint
     } else if (monster.evolutionStage == 3) {
-      filterColor = Colors.purple.withOpacity(0.3); // Mega tint
+      filterColor = Colors.purple.withValues(alpha: 0.3); // Mega tint
     }
 
     // Fallback for different species if we had them
@@ -27,7 +27,7 @@ class MonsterDisplay extends StatelessWidget {
           width: 150,
           height: 150,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
+            color: Colors.white.withValues(alpha: 0.1),
             shape: BoxShape.circle,
             border: Border.all(color: Colors.white, width: 2),
           ),
@@ -92,7 +92,7 @@ class MonsterDisplay extends StatelessWidget {
                   .map(
                     (t) => Chip(
                       label: Text(t, style: const TextStyle(fontSize: 12)),
-                      backgroundColor: Colors.amber.withOpacity(0.8),
+                      backgroundColor: Colors.amber.withValues(alpha: 0.8),
                       visualDensity: VisualDensity.compact,
                     ),
                   )
