@@ -12,6 +12,7 @@ import 'result_screen.dart';
 import 'settings_screen.dart';
 import 'inventory_screen.dart';
 import 'widgets/monster_display.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({super.key});
@@ -114,7 +115,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                         _StatBadge(
                           icon: Icons.confirmation_number,
                           value: '${gameState.tickets}',
-                          color: Colors.blue,
+                          color: MGColors.info,
                         ),
                         _StatBadge(
                           icon: Icons.monetization_on,
@@ -195,14 +196,14 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   ) {
     return ListTile(
       leading: Icon(icon, color: Colors.amber),
-      title: Text(title, style: const TextStyle(color: Colors.white)),
+      title: Text(title, style: const TextStyle(color: MGColors.textHighEmphasis)),
       subtitle: Text(
         'High Score: ${state.getHighScore(type == 0
             ? 'button_masher'
             : type == 1
             ? 'catch_game'
             : 'memory_game')}',
-        style: const TextStyle(color: Colors.grey),
+        style: const TextStyle(color: MGColors.common),
       ),
       trailing: const Icon(
         Icons.arrow_forward_ios,
@@ -289,7 +290,7 @@ class _StatBadge extends StatelessWidget {
           Text(
             value,
             style: const TextStyle(
-              color: Colors.white,
+              color: MGColors.textHighEmphasis,
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),

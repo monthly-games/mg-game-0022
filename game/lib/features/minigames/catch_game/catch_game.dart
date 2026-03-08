@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import '../minigame_base.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class CatchGame extends MiniGameBase with DragCallbacks, HasCollisionDetection {
   late Paddle _paddle;
@@ -27,7 +28,7 @@ class CatchGame extends MiniGameBase with DragCallbacks, HasCollisionDetection {
       text: 'Score: 0',
       position: Vector2(20, 40),
       textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 24, color: Colors.white),
+        style: const TextStyle(fontSize: 24, color: MGColors.textHighEmphasis),
       ),
     );
     add(_scoreText);
@@ -171,7 +172,7 @@ class DroppableBomb extends CircleComponent
         position: position,
         radius: 15,
         anchor: Anchor.center,
-        paint: Paint()..color = Colors.red,
+        paint: Paint()..color = MGColors.error,
       );
 
   @override

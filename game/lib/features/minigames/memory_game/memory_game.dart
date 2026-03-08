@@ -5,6 +5,7 @@ import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import '../minigame_base.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class MemoryGame extends MiniGameBase with TapDetector {
   final VoidCallback onGameOver;
@@ -21,9 +22,9 @@ class MemoryGame extends MiniGameBase with TapDetector {
   @override
   Future<void> onLoad() async {
     _buttons = [
-      ColorButton(0, Colors.red, Vector2(size.x / 2 - 60, size.y / 2 - 60)),
-      ColorButton(1, Colors.blue, Vector2(size.x / 2 + 60, size.y / 2 - 60)),
-      ColorButton(2, Colors.green, Vector2(size.x / 2 - 60, size.y / 2 + 60)),
+      ColorButton(0, MGColors.error, Vector2(size.x / 2 - 60, size.y / 2 - 60)),
+      ColorButton(1, MGColors.info, Vector2(size.x / 2 + 60, size.y / 2 - 60)),
+      ColorButton(2, MGColors.success, Vector2(size.x / 2 - 60, size.y / 2 + 60)),
       ColorButton(3, Colors.yellow, Vector2(size.x / 2 + 60, size.y / 2 + 60)),
     ];
     addAll(_buttons);
@@ -33,7 +34,7 @@ class MemoryGame extends MiniGameBase with TapDetector {
       position: Vector2(size.x / 2, size.y / 4),
       anchor: Anchor.center,
       textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 32, color: Colors.white),
+        style: const TextStyle(fontSize: 32, color: MGColors.textHighEmphasis),
       ),
     );
     add(_infoText);
@@ -74,7 +75,7 @@ class MemoryGame extends MiniGameBase with TapDetector {
       isGameOver = true; // Public field
       _infoText.text = 'Game Over!';
       _infoText.textRenderer = TextPaint(
-        style: const TextStyle(fontSize: 32, color: Colors.red),
+        style: const TextStyle(fontSize: 32, color: MGColors.error),
       );
       Future.delayed(const Duration(seconds: 1), onGameOver);
     } else {

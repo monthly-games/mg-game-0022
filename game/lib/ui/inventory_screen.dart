@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/game_state.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({super.key});
@@ -79,7 +80,7 @@ class _InventoryItemCard extends StatelessWidget {
         break;
       default:
         icon = Icons.question_mark;
-        color = Colors.grey;
+        color = MGColors.common;
         name = 'Unknown';
     }
 
@@ -103,7 +104,7 @@ class _InventoryItemCard extends StatelessWidget {
                     bottom: 0,
                     child: CircleAvatar(
                       radius: 10,
-                      backgroundColor: Colors.white,
+                      backgroundColor: MGColors.textHighEmphasis,
                       child: Text(
                         '$count',
                         style: const TextStyle(
@@ -124,7 +125,7 @@ class _InventoryItemCard extends StatelessWidget {
             ),
             const Text(
               'Tap to Use',
-              style: TextStyle(fontSize: 10, color: Colors.grey),
+              style: TextStyle(fontSize: 10, color: MGColors.common),
             ),
           ],
         ),

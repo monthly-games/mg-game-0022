@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/game_state.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class ResultScreen extends StatefulWidget {
   final int score;
@@ -72,7 +73,7 @@ class _ResultScreenState extends State<ResultScreen>
               style: TextStyle(
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: MGColors.textHighEmphasis,
                 letterSpacing: 4,
               ),
             ),
@@ -97,7 +98,7 @@ class _ResultScreenState extends State<ResultScreen>
               builder: (context, child) {
                 return Text(
                   'Score: ${_scoreAnimation.value}',
-                  style: const TextStyle(fontSize: 32, color: Colors.white),
+                  style: const TextStyle(fontSize: 32, color: MGColors.textHighEmphasis),
                 );
               },
             ),
@@ -109,7 +110,7 @@ class _ResultScreenState extends State<ResultScreen>
                   horizontal: 48,
                   vertical: 16,
                 ),
-                backgroundColor: Colors.green,
+                backgroundColor: MGColors.success,
               ),
               onPressed: () {
                 Navigator.of(context).pop();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/game_state.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class ShopScreen extends StatelessWidget {
   const ShopScreen({super.key});
@@ -97,12 +98,12 @@ class _ShopItem extends StatelessWidget {
       color: Colors.grey[900],
       margin: const EdgeInsets.only(bottom: 16),
       child: ListTile(
-        leading: Icon(icon, size: 48, color: Colors.white),
+        leading: Icon(icon, size: 48, color: MGColors.textHighEmphasis),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(description),
         trailing: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: canBuy ? Colors.green : Colors.grey,
+            backgroundColor: canBuy ? MGColors.success : MGColors.common,
           ),
           onPressed: canBuy ? onBuy : null,
           child: Text('$cost Coins'),

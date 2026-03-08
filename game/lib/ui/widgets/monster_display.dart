@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../features/monsters/monster_model.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class MonsterDisplay extends StatelessWidget {
   final Monster monster;
@@ -14,7 +15,7 @@ class MonsterDisplay extends StatelessWidget {
     Color filterColor = Colors.transparent;
 
     if (monster.evolutionStage == 2) {
-      filterColor = Colors.red.withValues(alpha: 0.3); // Super tint
+      filterColor = MGColors.error.withValues(alpha: 0.3); // Super tint
     } else if (monster.evolutionStage == 3) {
       filterColor = Colors.purple.withValues(alpha: 0.3); // Mega tint
     }
@@ -27,9 +28,9 @@ class MonsterDisplay extends StatelessWidget {
           width: 150,
           height: 150,
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.1),
+            color: MGColors.textHighEmphasis.withValues(alpha: 0.1),
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white, width: 2),
+            border: Border.all(color: MGColors.textHighEmphasis, width: 2),
           ),
           child: Stack(
             alignment: Alignment.center,
@@ -55,12 +56,12 @@ class MonsterDisplay extends StatelessWidget {
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: MGColors.textHighEmphasis,
           ),
         ),
         Text(
           'Lv. ${monster.level} ${monster.speciesName ?? ''}',
-          style: const TextStyle(fontSize: 16, color: Colors.grey),
+          style: const TextStyle(fontSize: 16, color: MGColors.common),
         ),
         // Stats and Traits
         Row(

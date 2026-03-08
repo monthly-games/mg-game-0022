@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import '../minigame_base.dart';
 import 'package:mg_common_game/core/ui/theme/app_colors.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
 class ButtonMasherGame extends MiniGameBase with TapDetector {
   int _score = 0;
@@ -20,7 +21,7 @@ class ButtonMasherGame extends MiniGameBase with TapDetector {
       position: Vector2(size.x / 2, size.y / 3),
       anchor: Anchor.center,
       textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 48, color: Colors.white),
+        style: const TextStyle(fontSize: 48, color: MGColors.textHighEmphasis),
       ),
     );
     add(_scoreText);

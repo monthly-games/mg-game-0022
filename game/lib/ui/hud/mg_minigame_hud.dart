@@ -125,7 +125,7 @@ class MGMinigameHud extends StatelessWidget {
         color: MGColors.surface.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(MGSpacing.sm),
         border: Border.all(
-          color: isLowTime ? Colors.red : MGColors.border,
+          color: isLowTime ? MGColors.error : MGColors.border,
         ),
       ),
       child: Column(
@@ -143,15 +143,15 @@ class MGMinigameHud extends StatelessWidget {
           MGLinearProgress(
             value: timeRatio,
             height: 12,
-            backgroundColor: Colors.grey.withValues(alpha: 0.3),
-            progressColor: isLowTime ? Colors.red : Colors.cyan,
+            backgroundColor: MGColors.common.withValues(alpha: 0.3),
+            progressColor: isLowTime ? MGColors.error : Colors.cyan,
           ),
           SizedBox(height: MGSpacing.xxs),
           // 시간 표시
           Text(
             '${timeRemaining.toInt()}s',
             style: MGTextStyles.buttonMedium.copyWith(
-              color: isLowTime ? Colors.red : Colors.white,
+              color: isLowTime ? MGColors.error : MGColors.textHighEmphasis,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -174,7 +174,7 @@ class MGMinigameHud extends StatelessWidget {
       comboColor = Colors.yellowAccent;
       comboStyle = MGTextStyles.display;
     } else {
-      comboColor = Colors.white;
+      comboColor = MGColors.textHighEmphasis;
       comboStyle = MGTextStyles.h3;
     }
 
@@ -205,12 +205,12 @@ class MGMinigameHud extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.local_fire_department, color: Colors.white, size: 20),
+            Icon(Icons.local_fire_department, color: MGColors.textHighEmphasis, size: 20),
             SizedBox(width: MGSpacing.xs),
             Text(
               '$combo COMBO!',
               style: comboStyle.copyWith(
-                color: Colors.white,
+                color: MGColors.textHighEmphasis,
                 fontWeight: FontWeight.bold,
                 shadows: [
                   const Shadow(
