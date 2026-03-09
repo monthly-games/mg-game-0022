@@ -16,7 +16,6 @@ class MGMinigameHud extends StatelessWidget {
   final int? targetScore;
   final String? gameTitle;
   final VoidCallback? onPause;
-  final VoidCallback? onDailyHub;
 
   const MGMinigameHud({
     super.key,
@@ -28,7 +27,6 @@ class MGMinigameHud extends StatelessWidget {
     this.targetScore,
     this.gameTitle,
     this.onPause,
-    this.onDailyHub,
   });
 
   @override
@@ -49,13 +47,6 @@ class MGMinigameHud extends StatelessWidget {
                 Expanded(child: _buildTimerPanel()),
                 SizedBox(width: MGSpacing.sm),
                 // 오른쪽: 일시정지
-                if (onDailyHub != null)
-                  MGIconButton(
-                    icon: Icons.calendar_today,
-                    onPressed: onDailyHub!,
-                    buttonSize: MGIconButtonSize.small,
-                  ),
-                const SizedBox(width: MGSpacing.xs),
                 if (onPause != null)
                   MGIconButton(
                     icon: Icons.pause,
