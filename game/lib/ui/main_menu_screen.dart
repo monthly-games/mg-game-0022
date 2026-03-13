@@ -257,6 +257,49 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
     Navigator.of(context).push(
       MaterialPageRoute(
+      endDrawer: Drawer(
+        child: SafeArea(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                    color: Color(0xFF1A237E)),
+                child: Text('Community',
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 24)),
+              ),
+              ListTile(
+                leading: const Icon(Icons.shield),
+                title: const Text('Guild War'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context)
+                      .pushNamed('/guild-war');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.emoji_events),
+                title: const Text('Tournament'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context)
+                      .pushNamed('/tournament');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.celebration),
+                title: const Text('Seasonal Event'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context)
+                      .pushNamed('/seasonal-event');
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
         builder: (context) => Scaffold(body: GameWidget(game: game)),
       ),
     );
