@@ -13,6 +13,8 @@ import 'screens/achievement_screen.dart';
 import 'screens/battlepass_screen.dart';
 import 'screens/gacha_screen.dart';
 import 'screens/collection_screen.dart';
+import 'game/tutorial_config.dart';
+import 'game/balancing_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +32,21 @@ void main() async {
   // Apply upgrade effects to RewardManager
   _applyUpgradeEffects(upgradeManager);
 
+  // ── Tutorial & Balancing ──────────────────────────────────
+  if (!GetIt.I.isRegistered<TutorialManager>()) {
+    final tutorialManager = TutorialManager();
+    await tutorialManager.initialize();
+    tutorialManager.registerTutorial(
+      kOnboardingTutorial.id,
+      kOnboardingTutorial.steps,
+    );
+    GetIt.I.registerSingleton<TutorialManager>(tutorialManager);
+  }
+  if (!GetIt.I.isRegistered<BalancingManager>()) {
+    GetIt.I.registerSingleton<BalancingManager>(
+      BalancingManager(defaultConfig: kDefaultBalancingConfig),
+    );
+  }
   runApp(MonsterPartyApp(initialState: initialState));
 }
 
