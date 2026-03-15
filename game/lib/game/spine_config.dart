@@ -14,7 +14,7 @@ const kMonsterSlimeMeta = SpineAssetMeta(
   atlasPath:
       'assets/spine/characters/monster_slime/monster_slime.atlas',
   skeletonPath:
-      'assets/spine/characters/monster_slime/monster_slime.skel',
+      'assets/spine/characters/monster_slime/monster_slime.json',
   animations: ['idle', 'walk', 'attack', 'hit'],
   defaultAnimation: 'idle',
   defaultMix: 0.2,
@@ -28,7 +28,7 @@ const kMonsterDragonMeta = SpineAssetMeta(
   atlasPath:
       'assets/spine/characters/monster_dragon/monster_dragon.atlas',
   skeletonPath:
-      'assets/spine/characters/monster_dragon/monster_dragon.skel',
+      'assets/spine/characters/monster_dragon/monster_dragon.json',
   animations: ['idle', 'walk', 'attack', 'hit'],
   defaultAnimation: 'idle',
   defaultMix: 0.2,
@@ -42,7 +42,7 @@ const kMonsterGolemMeta = SpineAssetMeta(
   atlasPath:
       'assets/spine/characters/monster_golem/monster_golem.atlas',
   skeletonPath:
-      'assets/spine/characters/monster_golem/monster_golem.skel',
+      'assets/spine/characters/monster_golem/monster_golem.json',
   animations: ['idle', 'walk', 'attack', 'hit'],
   defaultAnimation: 'idle',
   defaultMix: 0.2,

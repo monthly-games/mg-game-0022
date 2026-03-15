@@ -113,19 +113,19 @@ class CatchGame extends MiniGameBase with DragCallbacks, HasCollisionDetection {
 }
 
 class Paddle extends SpriteComponent
-    with CollisionCallbacks, HasGameRef<CatchGame> {
+    with CollisionCallbacks, HasGameReference<CatchGame> {
   Paddle({required Vector2 position})
     : super(position: position, size: Vector2(100, 20), anchor: Anchor.center);
 
   @override
   Future<void> onLoad() async {
-    sprite = await gameRef.loadSprite('paddle.png');
+    sprite = await game.loadSprite('paddle.png');
     add(RectangleHitbox());
   }
 }
 
 class DroppableCoin extends SpriteComponent
-    with CollisionCallbacks, HasGameRef<CatchGame> {
+    with CollisionCallbacks, HasGameReference<CatchGame> {
   final VoidCallback onCaught;
   final double speed;
 
@@ -135,7 +135,7 @@ class DroppableCoin extends SpriteComponent
 
   @override
   Future<void> onLoad() async {
-    sprite = await gameRef.loadSprite('coin.png');
+    sprite = await game.loadSprite('coin.png');
     add(CircleHitbox());
   }
 
@@ -143,7 +143,7 @@ class DroppableCoin extends SpriteComponent
   void update(double dt) {
     super.update(dt);
     position.y += speed * dt;
-    if (position.y > gameRef.size.y + 50) {
+    if (position.y > game.size.y + 50) {
       removeFromParent();
     }
   }
@@ -162,7 +162,7 @@ class DroppableCoin extends SpriteComponent
 }
 
 class DroppableBomb extends CircleComponent
-    with CollisionCallbacks, HasGameRef<CatchGame> {
+    with CollisionCallbacks, HasGameReference<CatchGame> {
   final VoidCallback onCaught;
   final double speed;
 
@@ -177,6 +177,7 @@ class DroppableBomb extends CircleComponent
 
   @override
   Future<void> onLoad() async {
+    await super.onLoad();
     add(CircleHitbox());
   }
 
@@ -184,7 +185,7 @@ class DroppableBomb extends CircleComponent
   void update(double dt) {
     super.update(dt);
     position.y += speed * dt;
-    if (position.y > gameRef.size.y + 50) {
+    if (position.y > game.size.y + 50) {
       removeFromParent();
     }
   }

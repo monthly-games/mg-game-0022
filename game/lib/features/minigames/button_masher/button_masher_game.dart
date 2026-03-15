@@ -1,3 +1,4 @@
+import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
@@ -5,7 +6,7 @@ import '../minigame_base.dart';
 import 'package:mg_common_game/core/ui/theme/app_colors.dart';
 import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
-class ButtonMasherGame extends MiniGameBase with TapDetector {
+class ButtonMasherGame extends MiniGameBase with TapCallbacks {
   int _score = 0;
   final VoidCallback onGameOver;
 
@@ -31,7 +32,7 @@ class ButtonMasherGame extends MiniGameBase with TapDetector {
       position: Vector2(size.x / 2, size.y / 5),
       anchor: Anchor.center,
       textRenderer: TextPaint(
-        style: const TextStyle(fontSize: 32, color: AppColors.accent),
+        style: const TextStyle(fontSize: 32, color: AppColors.primary),
       ),
     );
     add(_timerText);
@@ -44,27 +45,27 @@ class ButtonMasherGame extends MiniGameBase with TapDetector {
   }
 
   @override
-  void onTapDown(TapDownInfo info) {
+  void onTapDown(TapDownEvent event) {
     if (isGameOver) return;
     _score++;
     _scoreText.text = 'Taps: $_score';
 
     // Simple visual feedback
-    add(
-      TextComponent(
-        text: '+1',
-        position: info.eventPosition.widget,
-        textRenderer: TextPaint(
-          style: const TextStyle(fontSize: 24, color: AppColors.primary),
-        ),
-      )..add(
-        MoveEffect.by(
-          Vector2(0, -50),
-          EffectController(duration: 0.5),
-          onComplete: () => removeFromParent(),
-        ),
+    final feedbackText = TextComponent(
+      text: '+1',
+      position: event.localPosition,
+      textRenderer: TextPaint(
+        style: const TextStyle(fontSize: 24, color: AppColors.primary),
       ),
     );
+    feedbackText.add(
+      MoveByEffect(
+        Vector2(0, -50),
+        EffectController(duration: 0.5),
+        onComplete: () => feedbackText.removeFromParent(),
+      ),
+    );
+    add(feedbackText);
   }
 
   @override

@@ -2,7 +2,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
-import 'package:mg_common_game/systems/gacha/gacha_config.dart';
+import 'package:mg_common_game/systems/gacha/gacha_pool.dart';
 import 'package:mg_common_game/systems/gacha/gacha_manager.dart';
 
 /// 게임 내 Character 모델
@@ -42,7 +42,7 @@ class CharacterGachaAdapter extends ChangeNotifier {
   void _initPool() {
     final pool = GachaPool(
       id: _poolId,
-      name: 'Mini Games 가챠',
+      nameKr: 'Mini Games 가챠',
       items: _generateItems(),
       startDate: DateTime.now().subtract(const Duration(days: 1)),
       endDate: DateTime.now().add(const Duration(days: 365)),
@@ -53,30 +53,30 @@ class CharacterGachaAdapter extends ChangeNotifier {
   List<GachaItem> _generateItems() {
     return [
       // UR (0.6%)
-      GachaItem(id: 'ur_minigame_001', name: '전설의 Character', rarity: GachaRarity.ultraRare, weight: 1.0),
-      GachaItem(id: 'ur_minigame_002', name: '신화의 Character', rarity: GachaRarity.ultraRare, weight: 1.0),
+      const GachaItem(id: 'ur_minigame_001', nameKr: '전설의 Character', rarity: GachaRarity.ultraRare),
+      const GachaItem(id: 'ur_minigame_002', nameKr: '신화의 Character', rarity: GachaRarity.ultraRare),
       // SSR (2.4%)
-      GachaItem(id: 'ssr_minigame_001', name: '영웅의 Character', rarity: GachaRarity.superSuperRare, weight: 1.0),
-      GachaItem(id: 'ssr_minigame_002', name: '고대의 Character', rarity: GachaRarity.superSuperRare, weight: 1.0),
-      GachaItem(id: 'ssr_minigame_003', name: '황금의 Character', rarity: GachaRarity.superSuperRare, weight: 1.0),
+      const GachaItem(id: 'ssr_minigame_001', nameKr: '영웅의 Character', rarity: GachaRarity.superRare),
+      const GachaItem(id: 'ssr_minigame_002', nameKr: '고대의 Character', rarity: GachaRarity.superRare),
+      const GachaItem(id: 'ssr_minigame_003', nameKr: '황금의 Character', rarity: GachaRarity.superRare),
       // SR (12%)
-      GachaItem(id: 'sr_minigame_001', name: '희귀한 Character A', rarity: GachaRarity.superRare, weight: 1.0),
-      GachaItem(id: 'sr_minigame_002', name: '희귀한 Character B', rarity: GachaRarity.superRare, weight: 1.0),
-      GachaItem(id: 'sr_minigame_003', name: '희귀한 Character C', rarity: GachaRarity.superRare, weight: 1.0),
-      GachaItem(id: 'sr_minigame_004', name: '희귀한 Character D', rarity: GachaRarity.superRare, weight: 1.0),
+      const GachaItem(id: 'sr_minigame_001', nameKr: '희귀한 Character A', rarity: GachaRarity.superRare),
+      const GachaItem(id: 'sr_minigame_002', nameKr: '희귀한 Character B', rarity: GachaRarity.superRare),
+      const GachaItem(id: 'sr_minigame_003', nameKr: '희귀한 Character C', rarity: GachaRarity.superRare),
+      const GachaItem(id: 'sr_minigame_004', nameKr: '희귀한 Character D', rarity: GachaRarity.superRare),
       // R (35%)
-      GachaItem(id: 'r_minigame_001', name: '우수한 Character A', rarity: GachaRarity.rare, weight: 1.0),
-      GachaItem(id: 'r_minigame_002', name: '우수한 Character B', rarity: GachaRarity.rare, weight: 1.0),
-      GachaItem(id: 'r_minigame_003', name: '우수한 Character C', rarity: GachaRarity.rare, weight: 1.0),
-      GachaItem(id: 'r_minigame_004', name: '우수한 Character D', rarity: GachaRarity.rare, weight: 1.0),
-      GachaItem(id: 'r_minigame_005', name: '우수한 Character E', rarity: GachaRarity.rare, weight: 1.0),
+      const GachaItem(id: 'r_minigame_001', nameKr: '우수한 Character A', rarity: GachaRarity.rare),
+      const GachaItem(id: 'r_minigame_002', nameKr: '우수한 Character B', rarity: GachaRarity.rare),
+      const GachaItem(id: 'r_minigame_003', nameKr: '우수한 Character C', rarity: GachaRarity.rare),
+      const GachaItem(id: 'r_minigame_004', nameKr: '우수한 Character D', rarity: GachaRarity.rare),
+      const GachaItem(id: 'r_minigame_005', nameKr: '우수한 Character E', rarity: GachaRarity.rare),
       // N (50%)
-      GachaItem(id: 'n_minigame_001', name: '일반 Character A', rarity: GachaRarity.normal, weight: 1.0),
-      GachaItem(id: 'n_minigame_002', name: '일반 Character B', rarity: GachaRarity.normal, weight: 1.0),
-      GachaItem(id: 'n_minigame_003', name: '일반 Character C', rarity: GachaRarity.normal, weight: 1.0),
-      GachaItem(id: 'n_minigame_004', name: '일반 Character D', rarity: GachaRarity.normal, weight: 1.0),
-      GachaItem(id: 'n_minigame_005', name: '일반 Character E', rarity: GachaRarity.normal, weight: 1.0),
-      GachaItem(id: 'n_minigame_006', name: '일반 Character F', rarity: GachaRarity.normal, weight: 1.0),
+      const GachaItem(id: 'n_minigame_001', nameKr: '일반 Character A', rarity: GachaRarity.normal),
+      const GachaItem(id: 'n_minigame_002', nameKr: '일반 Character B', rarity: GachaRarity.normal),
+      const GachaItem(id: 'n_minigame_003', nameKr: '일반 Character C', rarity: GachaRarity.normal),
+      const GachaItem(id: 'n_minigame_004', nameKr: '일반 Character D', rarity: GachaRarity.normal),
+      const GachaItem(id: 'n_minigame_005', nameKr: '일반 Character E', rarity: GachaRarity.normal),
+      const GachaItem(id: 'n_minigame_006', nameKr: '일반 Character F', rarity: GachaRarity.normal),
     ];
   }
 
@@ -98,7 +98,7 @@ class CharacterGachaAdapter extends ChangeNotifier {
   Character _convertToItem(GachaItem item) {
     return Character(
       id: item.id,
-      name: item.name,
+      name: item.nameKr,
       rarity: item.rarity,
     );
   }

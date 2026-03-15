@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../minigame_base.dart';
 import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
 
-class MemoryGame extends MiniGameBase with TapDetector {
+class MemoryGame extends MiniGameBase with TapCallbacks {
   final VoidCallback onGameOver;
   int _level = 1;
   final List<int> _sequence = [];
@@ -104,7 +104,7 @@ class MemoryGame extends MiniGameBase with TapDetector {
 }
 
 class ColorButton extends PositionComponent
-    with TapCallbacks, HasGameRef<MemoryGame> {
+    with TapCallbacks, HasGameReference<MemoryGame> {
   final int index;
   final Color baseColor;
   late CircleComponent _circle;
@@ -140,6 +140,6 @@ class ColorButton extends PositionComponent
 
   @override
   void onTapDown(TapDownEvent event) {
-    gameRef.onButtonTap(index);
+    game.onButtonTap(index);
   }
 }

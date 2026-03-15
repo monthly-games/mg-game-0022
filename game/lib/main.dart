@@ -1,24 +1,7 @@
+import 'package:mg_common_game/mg_common_game.dart' hide SaveManager;
 import 'package:flutter/material.dart';
-import 'package:mg_common_game/core/ui/screens/seasonal_event_screen.dart';
-import 'package:mg_common_game/core/ui/screens/tournament_screen.dart';
-import 'package:mg_common_game/core/ui/screens/guild_war_screen.dart';
-import 'package:mg_common_game/systems/events/seasonal_content_manager.dart';
-import 'package:mg_common_game/systems/competitive/tournament_manager.dart';
-import 'package:mg_common_game/systems/social/guild_war_manager.dart';
-import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
-import 'package:mg_common_game/core/ui/screens/daily_hub_screen.dart';
-import 'package:mg_common_game/systems/retention/daily_challenge_manager.dart';
-import 'package:mg_common_game/systems/retention/streak_manager.dart';
-import 'package:mg_common_game/systems/retention/login_rewards_manager.dart';
-import 'package:flutter/foundation.dart';
-import 'package:mg_common_game/systems/systems.dart';
-import 'package:mg_common_game/systems/progression/achievement_manager.dart';
-import 'package:mg_common_game/systems/quests/daily_quest.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:mg_common_game/core/audio/audio_manager.dart';
-import 'package:mg_common_game/core/ui/theme/app_colors.dart';
-import 'package:mg_common_game/systems/progression/upgrade_manager.dart';
 import 'core/game_state.dart';
 import 'core/managers/save_manager.dart';
 import 'core/managers/mini_game_manager.dart';
@@ -27,7 +10,6 @@ import 'core/managers/reward_manager.dart';
 import 'ui/main_menu_screen.dart';
 import 'screens/daily_quest_screen.dart';
 import 'screens/achievement_screen.dart';
-import 'package:mg_common_game/systems/progression/prestige_manager.dart';
 import 'screens/battlepass_screen.dart';
 import 'screens/gacha_screen.dart';
 import 'screens/collection_screen.dart';
@@ -76,18 +58,32 @@ Future<void> _setupDI() async {
   // Upgrade system
   if (!di.isRegistered<UpgradeManager>()) {
     di.registerSingleton<UpgradeManager>(UpgradeManager());
+    _registerUpgrades(di.get<UpgradeManager>());
+  }
+
   // DailyQuest 시스템
-  GetIt.I.registerSingleton(DailyQuestManager());
+  if (!GetIt.I.isRegistered<DailyQuestManager>()) {
+    GetIt.I.registerSingleton(DailyQuestManager());
+  }
   // Achievement 시스템
-  GetIt.I.registerSingleton(AchievementManager());
+  if (!GetIt.I.isRegistered<AchievementManager>()) {
+    GetIt.I.registerSingleton(AchievementManager());
+  }
 
   // Prestige 시스템 (mg_common_game)
   if (!GetIt.I.isRegistered<PrestigeManager>()) {
     final prestigeManager = PrestigeManager();
     GetIt.I.registerSingleton(prestigeManager);
+    _setupPrestige(prestigeManager);
+    await prestigeManager.loadPrestigeData();
+  }
+
   // Collection 시스템
   if (!GetIt.I.isRegistered<CollectionManager>()) {
     GetIt.I.registerSingleton(CollectionManager());
+    _registerCollections();
+  }
+
   // ── Retention Systems for DailyHub ────────────────────────
   if (!GetIt.I.isRegistered<LoginRewardsManager>()) {
     GetIt.I.registerSingleton(LoginRewardsManager());
@@ -97,7 +93,8 @@ Future<void> _setupDI() async {
   }
   if (!GetIt.I.isRegistered<DailyChallengeManager>()) {
     GetIt.I.registerSingleton(DailyChallengeManager());
-}
+  }
+
   // ── P3 Engine Systems ─────────────────────────────────────
   if (!GetIt.I.isRegistered<GuildWarManager>()) {
     GetIt.I.registerSingleton(GuildWarManager());
@@ -108,15 +105,9 @@ Future<void> _setupDI() async {
   if (!GetIt.I.isRegistered<SeasonalContentManager>()) {
     GetIt.I.registerSingleton(SeasonalContentManager());
   }
-    _registerCollections();
-  }
-    _setupPrestige(prestigeManager);
-    await prestigeManager.loadPrestigeData();
-  }
+
   _registerAchievements();
   _registerDailyQuests();
-    _registerUpgrades(di.get<UpgradeManager>());
-  }
 }
 
 /// Registers 8 upgrades spanning coin boosts, XP multipliers,
@@ -406,47 +397,47 @@ void _registerCollections() {
   final collection = GetIt.I<CollectionManager>();
 
   // Characters 컬렉션
-  collection.registerCollection(const Collection(
+  collection.registerCollection(Collection(
     id: 'characters',
     name: '캐릭터',
     description: '모든 캐릭터를 수집하세요',
     items: [
-      CollectionItem(
+      const CollectionItem(
         id: 'char_warrior',
         name: '전사',
         description: '강인한 근접 전투 캐릭터',
         rarity: CollectionRarity.common,
       ),
-      CollectionItem(
+      const CollectionItem(
         id: 'char_mage',
         name: '마법사',
         description: '강력한 마법 공격 캐릭터',
         rarity: CollectionRarity.rare,
       ),
-      CollectionItem(
+      const CollectionItem(
         id: 'char_archer',
         name: '궁수',
         description: '원거리 정밀 공격 캐릭터',
         rarity: CollectionRarity.rare,
       ),
-      CollectionItem(
+      const CollectionItem(
         id: 'char_assassin',
         name: '암살자',
         description: '치명적인 은신 공격 캐릭터',
         rarity: CollectionRarity.epic,
       ),
-      CollectionItem(
+      const CollectionItem(
         id: 'char_healer',
         name: '힐러',
         description: '팀을 치유하는 지원 캐릭터',
         rarity: CollectionRarity.legendary,
       ),
     ],
-    completionReward: CollectionReward(type: RewardType.gold, amount: 10000),
+    completionReward: const CollectionReward(type: RewardType.gold, amount: 10000),
     milestoneRewards: {
-      25: CollectionReward(type: RewardType.gold, amount: 1000),
-      50: CollectionReward(type: RewardType.gold, amount: 3000),
-      75: CollectionReward(type: RewardType.gold, amount: 5000),
+      25: const CollectionReward(type: RewardType.gold, amount: 1000),
+      50: const CollectionReward(type: RewardType.gold, amount: 3000),
+      75: const CollectionReward(type: RewardType.gold, amount: 5000),
     },
   ));
 

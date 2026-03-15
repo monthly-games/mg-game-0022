@@ -41,7 +41,7 @@ class MGMinigameHud extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.all(MGSpacing.sm),
+        padding: const EdgeInsets.all(MGSpacing.sm),
         child: Column(
           children: [
             // 상단 HUD
@@ -50,10 +50,10 @@ class MGMinigameHud extends StatelessWidget {
               children: [
                 // 왼쪽: 점수
                 _buildScorePanel(),
-                SizedBox(width: MGSpacing.sm),
+                const SizedBox(width: MGSpacing.sm),
                 // 중앙: 타이머
                 Expanded(child: _buildTimerPanel()),
-                SizedBox(width: MGSpacing.sm),
+                const SizedBox(width: MGSpacing.sm),
                 // 오른쪽: 일시정지
                 if (onGuildWar != null)
                   MGIconButton(
@@ -87,7 +87,7 @@ class MGMinigameHud extends StatelessWidget {
                   MGIconButton(
                     icon: Icons.pause,
                     onPressed: onPause!,
-                    size: MGIconButtonSize.small,
+                    buttonSize: MGIconButtonSize.small,
                   ),
               ],
             ),
@@ -101,7 +101,7 @@ class MGMinigameHud extends StatelessWidget {
 
   Widget _buildScorePanel() {
     return Container(
-      padding: EdgeInsets.all(MGSpacing.sm),
+      padding: const EdgeInsets.all(MGSpacing.sm),
       decoration: BoxDecoration(
         color: MGColors.surface.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(MGSpacing.sm),
@@ -115,8 +115,8 @@ class MGMinigameHud extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.star, color: Colors.amber, size: 20),
-              SizedBox(width: MGSpacing.xs),
+              const Icon(Icons.star, color: Colors.amber, size: 20),
+              const SizedBox(width: MGSpacing.xs),
               Text(
                 '$score',
                 style: MGTextStyles.h3.copyWith(
@@ -126,7 +126,7 @@ class MGMinigameHud extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: MGSpacing.xxs),
+          const SizedBox(height: MGSpacing.xxs),
           // 하이스코어
           Text(
             'Best: $highScore',
@@ -136,7 +136,7 @@ class MGMinigameHud extends StatelessWidget {
           ),
           // 목표 점수
           if (targetScore != null) ...[
-            SizedBox(height: MGSpacing.xxs),
+            const SizedBox(height: MGSpacing.xxs),
             Text(
               'Goal: $targetScore',
               style: MGTextStyles.caption.copyWith(
@@ -156,7 +156,7 @@ class MGMinigameHud extends StatelessWidget {
     final bool isLowTime = timeRatio < 0.25;
 
     return Container(
-      padding: EdgeInsets.all(MGSpacing.sm),
+      padding: const EdgeInsets.all(MGSpacing.sm),
       decoration: BoxDecoration(
         color: MGColors.surface.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(MGSpacing.sm),
@@ -174,15 +174,15 @@ class MGMinigameHud extends StatelessWidget {
                 color: Colors.white70,
               ),
             ),
-          SizedBox(height: MGSpacing.xxs),
+          const SizedBox(height: MGSpacing.xxs),
           // 타이머 바
           MGLinearProgress(
             value: timeRatio,
             height: 12,
             backgroundColor: MGColors.common.withValues(alpha: 0.3),
-            progressColor: isLowTime ? MGColors.error : Colors.cyan,
+            valueColor: isLowTime ? MGColors.error : Colors.cyan,
           ),
-          SizedBox(height: MGSpacing.xxs),
+          const SizedBox(height: MGSpacing.xxs),
           // 시간 표시
           Text(
             '${timeRemaining.toInt()}s',
@@ -215,9 +215,9 @@ class MGMinigameHud extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.only(top: MGSpacing.sm),
+      padding: const EdgeInsets.only(top: MGSpacing.sm),
       child: Container(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: MGSpacing.md,
           vertical: MGSpacing.xs,
         ),
@@ -241,8 +241,8 @@ class MGMinigameHud extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.local_fire_department, color: MGColors.textHighEmphasis, size: 20),
-            SizedBox(width: MGSpacing.xs),
+            const Icon(Icons.local_fire_department, color: MGColors.textHighEmphasis, size: 20),
+            const SizedBox(width: MGSpacing.xs),
             Text(
               '$combo COMBO!',
               style: comboStyle.copyWith(
