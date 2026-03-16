@@ -157,7 +157,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       builder: (context) => Container(
         padding: const EdgeInsets.all(24),
         decoration: const BoxDecoration(
-          color: Color(0xFF1E1E1E),
+          color: MGColors.surfaceDark,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
