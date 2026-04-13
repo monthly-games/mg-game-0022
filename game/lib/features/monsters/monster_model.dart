@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mg_common_game/core/localization/localization.dart';
 
 class Monster extends Equatable {
   final String id;

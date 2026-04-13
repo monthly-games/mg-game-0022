@@ -1,6 +1,9 @@
+import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
+import 'package:mg_common_game/core/localization/localization.dart';
 import 'package:flutter/material.dart';
 import '../../features/monsters/monster_model.dart';
-import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';import 'package:mg_common_game/l10n/localization.dart';
+
 
 class MonsterDisplay extends StatelessWidget {
   final Monster monster;
@@ -50,7 +53,7 @@ class MonsterDisplay extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: MGSpacing.md),
         Text(
           monster.name,
           style: const TextStyle(
@@ -68,7 +71,7 @@ class MonsterDisplay extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _StatColumn(
-              label: 'STR',
+              label: 'shop_seasonpremiumpricetostringasfixed2'.tr,
               value: monster.stats['STR'] ?? 0,
               color: Colors.redAccent,
             ),
@@ -78,7 +81,7 @@ class MonsterDisplay extends StatelessWidget {
               color: Colors.greenAccent,
             ),
             _StatColumn(
-              label: 'INT',
+              label: 'ui_general_'.tr환생_성공_pointsgained_프레스티지_포인트를,
               value: monster.stats['INT'] ?? 0,
               color: Colors.blueAccent,
             ),
@@ -128,7 +131,7 @@ class _StatColumn extends StatelessWidget {
             fontSize: 12,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: MGSpacing.xxs),
         Container(
           width: 40,
           height: 6,
@@ -147,7 +150,7 @@ class _StatColumn extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: MGSpacing.xxs),
         Text(
           '$value',
           style: const TextStyle(color: Colors.white70, fontSize: 12),

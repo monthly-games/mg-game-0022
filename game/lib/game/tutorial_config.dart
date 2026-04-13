@@ -1,41 +1,35 @@
 import 'package:mg_common_game/systems/tutorial/tutorial.dart';
+import 'package:mg_common_game/systems/tutorial/tutorial_data.dart';
 
 /// Tutorial configuration for MG-0022: Monster Level-Up Party.
 ///
-/// Placeholder tutorial steps — replace with localized strings
+/// Placeholder tutorial steps -- replace with localized strings
 /// and add targetSelector for highlight positioning in production.
-const kOnboardingTutorial = TutorialConfig(
+final kOnboardingTutorial = TutorialConfig(
   id: 'onboarding',
   name: 'Monster Level-Up Party Tutorial',
   steps: [
     TutorialStep(
-      id: 'welcome',
-      title: 'Welcome!',
-      description: 'Tap to earn currency and grow.',
-      actionHint: 'Tap to continue',
+      id: 'play_button',
+      title: '게임을 시작하세요',
+      description: '플레이 버튼을 눌러 게임을 시작합니다.',
     ),
     TutorialStep(
-      id: 'first_tap',
-      title: 'Your First Tap',
-      description: 'Tap the main button to earn gold.',
-      actionHint: 'Tap to earn',
-      targetSelector: 'tap_button',
+      id: 'objective',
+      title: '목표를 달성하세요',
+      description: '화면의 안내를 따라 목표를 완수하세요.',
     ),
     TutorialStep(
-      id: 'first_upgrade',
-      title: 'Upgrade',
-      description: 'Spend gold to boost your earnings.',
-      actionHint: 'Tap upgrade',
-      targetSelector: 'upgrade_button',
+      id: 'reward',
+      title: '보상을 획득하세요',
+      description: '목표 달성 시 골드와 경험치를 받습니다.',
     ),
     TutorialStep(
-      id: 'idle_earnings',
-      title: 'Idle Earnings',
-      description: 'You earn gold even while away. Come back often to collect!',
-      actionHint: 'Tap to continue',
+      id: 'unlock',
+      title: '새 콘텐츠를 해제하세요',
+      description: '레벨을 올려 새로운 콘텐츠를 해제하세요.',
     ),
+  
   ],
   skippable: true,
-  showOnFirstLaunch: true,
-  trigger: TutorialTrigger.firstLaunch,
 );

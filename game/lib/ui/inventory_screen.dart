@@ -1,7 +1,10 @@
+import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
+import 'package:mg_common_game/core/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/game_state.dart';
-import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';import 'package:mg_common_game/l10n/localization.dart';
+
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({super.key});
@@ -18,11 +21,11 @@ class InventoryScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Inventory')),
+      appBar: AppBar(title: Text('ui_general_mercenary_inventory'.tr)),
       body: inventory.isEmpty
-          ? const Center(child: Text('Empty Pockets! Buy items in the Shop.'))
+          ? Center(child: Text('shop_empty_pockets_buy_items_in'.tr))
           : GridView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(MGSpacing.md),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 16,
@@ -40,7 +43,7 @@ class InventoryScreen extends StatelessWidget {
                     if (result) {
                       ScaffoldMessenger.of(
                         context,
-                      ).showSnackBar(SnackBar(content: Text('Used $itemId!')));
+                      ).showSnackBar(SnackBar(content: Text('ui_general_used_itemid'.tr)));
                     }
                   },
                 );
@@ -117,7 +120,7 @@ class _InventoryItemCard extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: MGSpacing.xs),
             Text(
               name,
               textAlign: TextAlign.center,

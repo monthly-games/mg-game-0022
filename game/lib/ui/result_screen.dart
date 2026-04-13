@@ -1,3 +1,4 @@
+import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/game_state.dart';
@@ -77,7 +78,7 @@ class _ResultScreenState extends State<ResultScreen>
                 letterSpacing: 4,
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: MGSpacing.xl),
 
             // Stars
             Row(
@@ -90,7 +91,7 @@ class _ResultScreenState extends State<ResultScreen>
                 );
               }),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: MGSpacing.md),
 
             // Animated Score
             AnimatedBuilder(
@@ -102,7 +103,7 @@ class _ResultScreenState extends State<ResultScreen>
                 );
               },
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: MGSpacing.xxl),
 
             ElevatedButton(
               style: ElevatedButton.styleFrom(

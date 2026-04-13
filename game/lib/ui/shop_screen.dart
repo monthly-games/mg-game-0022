@@ -1,7 +1,10 @@
+import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
+import 'package:mg_common_game/core/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/game_state.dart';
-import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';import 'package:mg_common_game/l10n/localization.dart';
+
 
 class ShopScreen extends StatelessWidget {
   const ShopScreen({super.key});
@@ -12,21 +15,21 @@ class ShopScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shop'),
+        title: Text('shop_leave_shop'.tr),
         backgroundColor: Colors.transparent,
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(MGSpacing.md),
         children: [
           // Currency Display
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(MGSpacing.md),
             color: Colors.white10,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.monetization_on, color: Colors.amber),
-                const SizedBox(width: 8),
+                const SizedBox(width: MGSpacing.xs),
                 Text(
                   '${gameState.coins} Coins',
                   style: const TextStyle(fontSize: 20),
@@ -34,7 +37,7 @@ class ShopScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: MGSpacing.xl),
 
           _ShopItem(
             title: 'XP Potion',
@@ -47,7 +50,7 @@ class ShopScreen extends StatelessWidget {
                 gameState.addCoins(-300);
                 gameState.addItem('potion_xp');
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Bought XP Potion!')),
+                  const SnackBar(content: Text('ui_general_bought_xp_potion'.tr)),
                 );
               }
             },
@@ -64,7 +67,7 @@ class ShopScreen extends StatelessWidget {
                 gameState.addCoins(-500);
                 gameState.addItem('ticket_refill');
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Bought Ticket Refill!')),
+                  const SnackBar(content: Text('ui_general_bought_ticket_refill'.tr)),
                 );
               }
             },
@@ -106,7 +109,7 @@ class _ShopItem extends StatelessWidget {
             backgroundColor: canBuy ? MGColors.success : MGColors.common,
           ),
           onPressed: canBuy ? onBuy : null,
-          child: Text('$cost Coins'),
+          child: Text('ui_general_cost_coins'.tr),
         ),
       ),
     );

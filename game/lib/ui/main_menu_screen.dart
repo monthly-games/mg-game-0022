@@ -1,3 +1,5 @@
+import 'package:mg_common_game/core/ui/layout/mg_spacing.dart';
+import 'package:mg_common_game/core/localization/localization.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +14,8 @@ import 'result_screen.dart';
 import 'settings_screen.dart';
 import 'inventory_screen.dart';
 import 'widgets/monster_display.dart';
-import 'package:mg_common_game/core/ui/theme/mg_colors.dart';
+import 'package:mg_common_game/core/ui/theme/mg_colors.dart';import 'package:mg_common_game/l10n/localization.dart';
+
 
 class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({super.key});
@@ -34,12 +37,12 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Daily Bonus!'),
-            content: const Text('You received 100 Coins and Ticket Refill!'),
+            title: Text('notification_daily_bonus'.tr),
+            content: Text('ui_general_you_received_100_coins_and'.tr),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Awesome!'),
+                child: Text('ui_general_awesome'.tr),
               ),
             ],
           ),
@@ -63,7 +66,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Monster Party'),
+        title: Text('ui_general_monster_party'.tr),
         actions: [
           IconButton(
             icon: const Icon(Icons.inventory_2),
@@ -93,11 +96,11 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 'Monster Party',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: MGSpacing.xl),
 
               // Active Monster Info
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(MGSpacing.md),
                 decoration: BoxDecoration(
                   color: Colors.white10,
                   borderRadius: BorderRadius.circular(16),
@@ -106,7 +109,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   children: [
                     // Monster Display
                     MonsterDisplay(monster: monster),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: MGSpacing.md),
 
                     // Stats Row
                     Row(
@@ -127,7 +130,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 48),
+              const SizedBox(height: MGSpacing.xxl),
 
               // Play Button
               ElevatedButton.icon(
@@ -135,7 +138,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     ? () => _showGameSelection(context, gameState)
                     : null,
                 icon: const Icon(Icons.play_arrow),
-                label: const Text('Play Mini-Game'),
+                label: Text('ui_general_play_minigame'.tr),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 32,
@@ -155,7 +158,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(MGSpacing.lg),
         decoration: const BoxDecoration(
           color: MGColors.surfaceDark,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -164,7 +167,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text('Select Game', style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 16),
+            const SizedBox(height: MGSpacing.md),
             _gameOption(
               context,
               'Button Masher',
@@ -180,7 +183,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               1,
             ),
             _gameOption(context, 'Memory Game', Icons.grid_view, gameState, 2),
-            const SizedBox(height: 32),
+            const SizedBox(height: MGSpacing.xl),
           ],
         ),
       ),
@@ -286,7 +289,7 @@ class _StatBadge extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: color, size: 20),
-          const SizedBox(width: 8),
+          const SizedBox(width: MGSpacing.xs),
           Text(
             value,
             style: const TextStyle(
