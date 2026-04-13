@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"for game in 0025 0026 0027 0028 0030 0033 0034 0036 0037 0038 0039 0040 0041 0042; do\\n  cd \\\"D:/mg-games/repos/mg-game-$game/game\\\" 2>/dev/null && head -60 lib/main.dart | tail -35 | grep...",
+  "error": "Exit code 1\n22:// await // // Firebase.initializeApp(\n23:options: // DefaultFirebaseOptions.currentPlatform,\nMG-0025 has malformed Firebase\n13:// await // // Firebase.initializeApp(\n14:options: // DefaultFirebaseOptions.currentPlatform,\nMG-0026 has malformed Firebase\n34:        // await // // Firebase.initializeApp(\n35:          options: // DefaultFirebaseOptions.currentPlatform,\nMG-0034 has malformed Firebase\n35:        // await // // Firebase.initializeApp(\nMG-0037 has malformed Firebase\n12:  ...",
+  "timestamp": "2026-04-12T09:46:49.542Z",
+  "retry_count": 1
+}
