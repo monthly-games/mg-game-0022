@@ -1,609 +1,434 @@
-import 'package:mg_common_game/mg_common_game.dart' hide SaveManager;
-import 'package:mg_common_game/core/localization/localization.dart';
-import 'package:mg_common_game/core/ui/accessibility/accessibility_settings.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
-import 'core/game_state.dart';
-import 'core/managers/save_manager.dart';
-import 'core/managers/mini_game_manager.dart';
-import 'core/managers/progress_manager.dart';
-import 'core/managers/reward_manager.dart';
-import 'ui/main_menu_screen.dart';
-import 'screens/daily_quest_screen.dart';
-import 'screens/achievement_screen.dart';
-import 'screens/battlepass_screen.dart';
-import 'screens/gacha_screen.dart';
-import 'screens/collection_screen.dart';
-// // import 'game/tutorial_config.dart'; // TutorialManager not available
-// import 'game/balancing_config.dart'; // BalancingManager not available
-// import 'package:firebase_core/firebase_core.dart';
-// import 'firebase_options.dart';
-// import 'package:mg_common_game/systems/quests/daily_quest_v2.dart';
-// import 'package:mg_common_game/core/ui/screens/daily_quest_screen_v2.dart';
-// import 'package:mg_common_game/l10n/localization.dart';
-import 'package:mg_common_game/l10n/extensions.dart';
-// 
-void main() async {
-WidgetsFlutterBinding.ensureInitialized();
-await _setupDI();
-await GetIt.I<AudioManager>().initialize();
-// Load saved state
-final saveManager = GetIt.I<SaveManager>();
-final initialState = await saveManager.loadGameState() ?? GameState();
-// Load saved upgrade levels
-final upgradeManager = GetIt.I<UpgradeManager>();
-await upgradeManager.loadUpgrades();
-// Apply upgrade effects to RewardManager
-_applyUpgradeEffects(upgradeManager);
-// ── Tutorial & Balancing ──────────────────────────────────
-if (!GetIt.I.isRegistered<TutorialManager>()) {
-final tutorialManager = TutorialManager();
-await tutorialManager.initialize();
-tutorialManager.registerTutorial(
-kOnboardingTutorial.id,
-kOnboardingTutorial.steps,
-);
-GetIt.I.registerSingleton<TutorialManager>(tutorialManager);
-}
-if (!GetIt.I.isRegistered<BalancingManager>()) {
-GetIt.I.registerSingleton<BalancingManager>(
-BalancingManager(defaultConfig: kDefaultBalancingConfig),
-);
-}
-// ── Q7 DI Fix: Missing Systems ──────────────────────────
-if (!GetIt.I.isRegistered<BattlePassManager>()) {
-GetIt.I.registerSingleton<BattlePassManager>(BattlePassManager());
-}
-if (!GetIt.I.isRegistered<GachaManager>()) {
-GetIt.I.registerSingleton<GachaManager>(GachaManager());
-}
-runApp(MonsterPartyApp(initialState: initialState));
-}
-Future<void> _setupDI() async {
-final di = GetIt.I;
-// Core services
-if (!di.isRegistered<AudioManager>()) {
-di.registerSingleton<AudioManager>(AudioManager());
-}
-if (!di.isRegistered<SaveManager>()) {
-di.registerSingleton<SaveManager>(SaveManager());
-}
-// Hub managers
-if (!di.isRegistered<MiniGameManager>()) {
-di.registerSingleton<MiniGameManager>(MiniGameManager());
-}
-if (!di.isRegistered<ProgressManager>()) {
-di.registerSingleton<ProgressManager>(ProgressManager());
-}
-if (!di.isRegistered<RewardManager>()) {
-di.registerSingleton<RewardManager>(RewardManager());
-}
-// Upgrade system
-if (!di.isRegistered<UpgradeManager>()) {
-di.registerSingleton<UpgradeManager>(UpgradeManager());
-_registerUpgrades(di.get<UpgradeManager>());
-}
-// DailyQuest 시스템
-if (!GetIt.I.isRegistered<DailyQuestManager>()) {
-// Daily Quest V2 - 7 Quest System with Streak Bonuses
-if (!GetIt.I.isRegistered<DailyQuestManagerV2>()) {
-final questManager = DailyQuestManagerV2();
-// Slot 0: Login Quest
-questManager.registerQuest(
-DailyQuestV2(
-id: 'quest_slot_0',
-title: 'Daily Login',
-description: 'Start your adventure!',
-type: QuestType.login,
-tier: QuestTier.easy,
-targetValue: 1,
-baseGoldReward: 50,
-baseXpReward: 20,
-),
-slotIndex: 0,
-);
-// Slot 1: Play Quest
-questManager.registerQuest(
-DailyQuestV2(
-id: 'quest_slot_1',
-title: 'Platform Play',
-description: 'Play 5 levels',
-type: QuestType.play,
-tier: QuestTier.easy,
-targetValue: 5,
-baseGoldReward: 100,
-baseXpReward: 40,
-),
-slotIndex: 1,
-);
-// Slot 2: Win Quest
-questManager.registerQuest(
-DailyQuestV2(
-id: 'quest_slot_2',
-title: 'Score Chaser',
-description: 'Score 500 total points',
-type: QuestType.win,
-tier: QuestTier.medium,
-targetValue: 500,
-baseGoldReward: 150,
-baseXpReward: 75,
-),
-slotIndex: 2,
-);
-// Slot 3: Upgrade Quest
-questManager.registerQuest(
-DailyQuestV2(
-id: 'quest_slot_3',
-title: 'Collect Coins',
-description: 'Collect 100 coins',
-type: QuestType.upgrade,
-tier: QuestTier.easy,
-targetValue: 100,
-baseGoldReward: 120,
-baseXpReward: 50,
-),
-slotIndex: 3,
-);
-// Slot 4: Social Quest
-questManager.registerQuest(
-DailyQuestV2(
-id: 'quest_slot_4',
-title: 'Challenge Friends',
-description: 'Challenge 3 friends',
-type: QuestType.social,
-tier: QuestTier.easy,
-targetValue: 3,
-baseGoldReward: 100,
-baseXpReward: 40,
-),
-slotIndex: 4,
-);
-// Slot 5: Achievement Quest
-questManager.registerQuest(
-DailyQuestV2(
-id: 'quest_slot_5',
-title: 'Level Complete',
-description: 'Complete 3 levels',
-type: QuestType.achievement,
-tier: QuestTier.medium,
-targetValue: 3,
-baseGoldReward: 200,
-baseXpReward: 80,
-),
-slotIndex: 5,
-);
-// Slot 6: Bonus Quest
-questManager.registerQuest(
-DailyQuestV2(
-id: 'quest_slot_6',
-title: 'Perfect Level',
-description: 'Complete a level without dying',
-type: QuestType.bonus,
-tier: QuestTier.special,
-targetValue: 1,
-baseGoldReward: 300,
-baseXpReward: 120,
-baseGemReward: 10,
-),
-slotIndex: 6,
-);
-// Setup streak bonus callbacks
-questManager.onStreakMilestoneReached = (streak) {
-if (GetIt.I.isRegistered<SettingsManager>()) {
-GetIt.I<SettingsManager>().triggerVibration(
-intensity: VibrationIntensity.heavy,
-);
-}
-};
-if (!GetIt.I.isRegistered<questManager>()) {
-    GetIt.I.registerSingleton(questManager);
-  };
-await questManager.loadQuestData();
-await questManager.checkAndResetIfNeeded();
-}
-//   }
-//   // Achievement 시스템
-//   if (!GetIt.I.isRegistered<AchievementManager>()) {
-//     if (!GetIt.I.isRegistered<AchievementManager(>()) {
-    GetIt.I.registerSingleton(AchievementManager());
-  });
-//   }
-// 
-//   // Prestige 시스템 (mg_common_game)
-  if (!GetIt.I.isRegistered<PrestigeManager>()) {
-    final prestigeManager = PrestigeManager();
-    if (!GetIt.I.isRegistered<prestigeManager>()) {
-    GetIt.I.registerSingleton(prestigeManager);
-  };
-    _setupPrestige(prestigeManager);
-    await prestigeManager.loadPrestigeData();
-  }
+import 'package:game/game/level_design_config.dart';
+import 'package:game/game/wave_spawn_table.dart';
 
-  // Collection 시스템
-  if (!GetIt.I.isRegistered<CollectionManager>()) {
-    if (!GetIt.I.isRegistered<CollectionManager(>()) {
-    GetIt.I.registerSingleton(CollectionManager());
-  });
-    _registerCollections();
-  }
-
-  // ── Retention Systems for DailyHub ────────────────────────
-  //   if (!GetIt.I.isRegistered<LoginRewardsManager>()) {
-  //     if (!GetIt.I.isRegistered<LoginRewardsManager(>()) {
-    GetIt.I.registerSingleton(LoginRewardsManager());
-  });
-  //   }
-  //   if (!GetIt.I.isRegistered<StreakManager>()) {
-  //     if (!GetIt.I.isRegistered<StreakManager(>()) {
-    GetIt.I.registerSingleton(StreakManager());
-  });
-  //   }
-  //   if (!GetIt.I.isRegistered<DailyChallengeManager>()) {
-  //     if (!GetIt.I.isRegistered<DailyChallengeManager(>()) {
-    GetIt.I.registerSingleton(DailyChallengeManager());
-  });
-  //   }
-
-  //   // ── P3 Engine Systems ─────────────────────────────────────
-  //   if (!GetIt.I.isRegistered<GuildWarManager>()) {
-  //     if (!GetIt.I.isRegistered<GuildWarManager(>()) {
-    GetIt.I.registerSingleton(GuildWarManager());
-  });
-  //   }
-  //   if (!GetIt.I.isRegistered<TournamentManager>()) {
-  //     if (!GetIt.I.isRegistered<TournamentManager(>()) {
-    GetIt.I.registerSingleton(TournamentManager());
-  });
-  //   }
-  //   if (!GetIt.I.isRegistered<SeasonalContentManager>()) {
-  //     if (!GetIt.I.isRegistered<SeasonalContentManager(>()) {
-    GetIt.I.registerSingleton(SeasonalContentManager());
-  });
-  //   }
-
-  _registerAchievements();
-  _registerDailyQuests();
+void main() {
+  runApp(const MyApp());
 }
 
-/// Registers 8 upgrades spanning coin boosts, XP multipliers,
-/// ticket capacity, and per-minigame performance buffs.
-void _registerUpgrades(UpgradeManager manager) {
-  manager.registerUpgrade(Upgrade(
-    id: 'coin_boost',
-    name: 'Coin Boost',
-    description: 'Increases coin rewards from all mini-games',
-    maxLevel: 10,
-    baseCost: 100,
-    costMultiplier: 1.5,
-    valuePerLevel: 0.1, // +10% per level
-  ));
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-  manager.registerUpgrade(Upgrade(
-    id: 'xp_boost',
-    name: 'XP Boost',
-    description: 'Increases XP rewards from all mini-games',
-    maxLevel: 10,
-    baseCost: 120,
-    costMultiplier: 1.5,
-    valuePerLevel: 0.1, // +10% per level
-  ));
-
-  manager.registerUpgrade(Upgrade(
-    id: 'ticket_capacity',
-    name: 'Ticket Pouch',
-    description: 'Increases maximum ticket capacity',
-    maxLevel: 5,
-    baseCost: 200,
-    costMultiplier: 2.0,
-    valuePerLevel: 1.0, // +1 max ticket per level
-  ));
-
-  manager.registerUpgrade(Upgrade(
-    id: 'time_extension',
-    name: 'Time Extension',
-    description: 'Adds bonus seconds to timed mini-games',
-    maxLevel: 5,
-    baseCost: 150,
-    costMultiplier: 1.8,
-    valuePerLevel: 2.0, // +2 seconds per level
-  ));
-
-  manager.registerUpgrade(Upgrade(
-    id: 'score_multiplier',
-    name: 'Score Multiplier',
-    description: 'Multiplies base score from all games',
-    maxLevel: 8,
-    baseCost: 250,
-    costMultiplier: 1.6,
-    valuePerLevel: 0.05, // +5% per level
-  ));
-
-  manager.registerUpgrade(Upgrade(
-    id: 'monster_xp_rate',
-    name: 'Monster Training',
-    description: 'Increases monster XP gain rate',
-    maxLevel: 10,
-    baseCost: 80,
-    costMultiplier: 1.4,
-    valuePerLevel: 0.15, // +15% per level
-  ));
-
-  manager.registerUpgrade(Upgrade(
-    id: 'streak_bonus',
-    name: 'Streak Power',
-    description: 'Increases daily streak bonus rewards',
-    maxLevel: 5,
-    baseCost: 300,
-    costMultiplier: 1.7,
-    valuePerLevel: 0.2, // +20% streak bonus per level
-  ));
-
-  manager.registerUpgrade(Upgrade(
-    id: 'star_threshold',
-    name: 'Star Magnet',
-    description: 'Lowers score thresholds for earning stars',
-    maxLevel: 5,
-    baseCost: 400,
-    costMultiplier: 2.0,
-    valuePerLevel: 0.05, // -5% threshold per level
-  ));
-}
-
-/// Applies current upgrade levels to runtime managers.
-void _applyUpgradeEffects(UpgradeManager upgradeManager) {
-  final rewardManager = GetIt.I<RewardManager>();
-
-  final coinBoost = upgradeManager.getUpgrade('coin_boost');
-  if (coinBoost != null) {
-    rewardManager.setCoinMultiplier(1.0 + coinBoost.currentValue);
-  }
-
-  final xpBoost = upgradeManager.getUpgrade('xp_boost');
-  if (xpBoost != null) {
-    rewardManager.setXpMultiplier(1.0 + xpBoost.currentValue);
-  }
-}
-
-class MonsterPartyApp extends StatelessWidget {
-  final GameState initialState;
-
-  const MonsterPartyApp({super.key, required this.initialState});
+  static const gameId = 'MG-0022';
+  static const gameTitle = 'Monster Level-Up Party';
+  static const coreFunLoop = kCoreFunLoop;
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => initialState),
-        ChangeNotifierProvider.value(value: GetIt.I<MiniGameManager>()),
-        ChangeNotifierProvider.value(value: GetIt.I<ProgressManager>()),
-        ChangeNotifierProvider.value(value: GetIt.I<RewardManager>()),
-        ChangeNotifierProvider.value(value: GetIt.I<UpgradeManager>()),
-      ],
-      child: MaterialApp(
-        title: 'Monster Party',
-      supportedLocales: mgSupportedLocales,
-      localizationsDelegates: mgLocalizationDelegates,
-                localizationsDelegates: mgLocalizationDelegates,
-        theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: AppColors.background,
-          primaryColor: AppColors.primary,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.primary,
-            brightness: Brightness.dark,
+    return MaterialApp(
+      title: gameTitle,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF3949AB),
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
+      routes: {
+        '/game': (_) => const GameScreen(),
+        '/engine': (_) => const FrameLoopScreen(),
+        '/levels': (_) => const LevelRoadmapScreen(),
+        '/daily': (_) => const DailyHubScreen(),
+        '/retention': (_) => const RetentionHubScreen(),
+        '/guild-war': (_) => const GuildWarScreen(),
+        '/tournament': (_) => const TournamentScreen(),
+        '/seasonal-event': (_) => const SeasonalEventScreen(),
+      },
+      home: const MainMenuScreen(),
+    );
+  }
+}
+
+class MainMenuScreen extends StatelessWidget {
+  const MainMenuScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 480),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Icon(Icons.videogame_asset_rounded, size: 72),
+                  const SizedBox(height: 24),
+                  Text(
+                    MyApp.gameId,
+                    key: const ValueKey('game-id'),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    MyApp.gameTitle,
+                    key: const ValueKey('game-title'),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Core Fun: ${MyApp.coreFunLoop}',
+                    key: const ValueKey('core-fun-loop'),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+                  FilledButton.icon(
+                    key: const ValueKey('start-game'),
+                    onPressed: () => Navigator.of(context).pushNamed('/game'),
+                    icon: const Icon(Icons.play_arrow_rounded),
+                    label: const Text('Start Game'),
+                  ),
+                  const SizedBox(height: 12),
+                  OutlinedButton.icon(
+                    key: const ValueKey('level-roadmap'),
+                    onPressed: () => Navigator.of(context).pushNamed('/levels'),
+                    icon: const Icon(Icons.map_rounded),
+                    label: const Text('Level Roadmap'),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: const [
+                      _MenuAction(
+                        route: '/engine',
+                        buttonKey: ValueKey('engine-loop'),
+                        icon: Icons.memory_rounded,
+                        label: 'Engine',
+                      ),
+                      _MenuAction(
+                        route: '/retention',
+                        buttonKey: ValueKey('rewards'),
+                        icon: Icons.card_giftcard_rounded,
+                        label: 'Rewards',
+                      ),
+                      _MenuAction(
+                        route: '/daily',
+                        buttonKey: ValueKey('daily-quests'),
+                        icon: Icons.today_rounded,
+                        label: 'Daily',
+                      ),
+                      _MenuAction(
+                        route: '/guild-war',
+                        buttonKey: ValueKey('guild-war'),
+                        icon: Icons.groups_rounded,
+                        label: 'Guild',
+                      ),
+                      _MenuAction(
+                        route: '/tournament',
+                        buttonKey: ValueKey('tournament'),
+                        icon: Icons.emoji_events_rounded,
+                        label: 'Tournament',
+                      ),
+                      _MenuAction(
+                        route: '/seasonal-event',
+                        buttonKey: ValueKey('seasonal-event'),
+                        icon: Icons.event_rounded,
+                        label: 'Event',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-        routes: {
-          '/daily-quests': (_) => const DailyQuestScreen(),
-          '/achievements': (_) => const AchievementScreen(),
-          '/daily_quest': (_) => const DailyQuestScreen(),
-          '/achievement': (_) => const AchievementScreen(),
-          '/battlepass': (_) => const BattlePassScreen(),
-          '/gacha': (_) => const GachaScreen(),
-        '/daily-hub': (context) => DailyHubScreen(
-          questManager: GetIt.I<DailyQuestManager>(),
-          loginRewardsManager: GetIt.I<LoginRewardsManager>(),
-          streakManager: GetIt.I<StreakManager>(),
-          challengeManager: GetIt.I<DailyChallengeManager>(),
-          accentColor: MGColors.primaryAction,
-          onClose: () => Navigator.pop(context),
-        ),
-        
-          '/collection': (context) => CollectionScreen(
-            collectionManager: GetIt.I<CollectionManager>(),
-          ),
-          '/guild-war': (context) => GuildWarScreen(
-            guildWarManager: GetIt.I<GuildWarManager>(),
-            accentColor: MGColors.primaryAction,
-            onClose: () => Navigator.pop(context),
-            ),
-          '/tournament': (context) => TournamentScreen(
-            tournamentManager: GetIt.I<TournamentManager>(),
-            accentColor: MGColors.primaryAction,
-            onClose: () => Navigator.pop(context),
-            ),
-          '/seasonal-event': (context) => SeasonalEventScreen(
-            seasonalContentManager: GetIt.I<SeasonalContentManager>(),
-            accentColor: MGColors.primaryAction,
-            onClose: () => Navigator.pop(context),
-            ),
-},
-        home: const MainMenuScreen(),
       ),
     );
   }
 }
 
+class _MenuAction extends StatelessWidget {
+  const _MenuAction({
+    required this.route,
+    required this.buttonKey,
+    required this.icon,
+    required this.label,
+  });
 
-void _registerDailyQuests() {
-  final dailyQuest = GetIt.I<DailyQuestManager>();
+  final String route;
+  final ValueKey<String> buttonKey;
+  final IconData icon;
+  final String label;
 
-  dailyQuest.registerQuest(DailyQuest(
-    id: 'play_minigames',
-    title: '미니게임 플레이',
-    description: '미니게임 7회 플레이',
-    targetValue: 7,
-    goldReward: 500,
-    xpReward: 10,
-  ));
-
-  dailyQuest.registerQuest(DailyQuest(
-    id: 'earn_stars',
-    title: '별 획득',
-    description: '별 30개 획득',
-    targetValue: 30,
-    goldReward: 300,
-    xpReward: 5,
-  ));
-
-  dailyQuest.registerQuest(DailyQuest(
-    id: 'high_scores',
-    title: '고득점 달성',
-    description: '고득점 3회 달성',
-    targetValue: 3,
-    goldReward: 200,
-    xpReward: 3,
-  ));
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 132,
+      child: OutlinedButton.icon(
+        key: buttonKey,
+        onPressed: () => Navigator.of(context).pushNamed(route),
+        icon: Icon(icon),
+        label: Text(label),
+      ),
+    );
+  }
 }
 
+class GameScreen extends StatefulWidget {
+  const GameScreen({super.key});
 
-void _registerAchievements() {
-  final achievement = GetIt.I<AchievementManager>();
-  
-  achievement.registerAchievement(Achievement(
-    id: 'gold_1000',
-    title: '골드 1000 달성',
-    description: '총 골드 1000을 모으세요',
-    iconAsset: 'assets/achievements/gold_1000.png',
-  ));
-  
-  achievement.registerAchievement(Achievement(
-    id: 'level_10',
-    title: '레벨 10 달성',
-    description: '레벨 10에 도달하세요',
-    iconAsset: 'assets/achievements/level_10.png',
-  ));
-  
-  achievement.registerAchievement(Achievement(
-    id: 'play_100',
-    title: '100판 플레이',
-    description: '게임을 100판 플레이하세요',
-    iconAsset: 'assets/achievements/play_100.png',
-  ));
+  @override
+  State<GameScreen> createState() => _GameScreenState();
 }
 
-void _setupPrestige(PrestigeManager manager) {
-  // ── Prestige Upgrades (idle game defaults) ──────────────────
-  // Five core upgrades for idle games
-  manager.registerPrestigeUpgrade(PrestigeUpgrade(
-    id: 'gold_multiplier',
-    name: '골드 배수',
-    description: '골드 획득량 +10%',
-    maxLevel: 50,
-    costPerLevel: 1,
-    bonusPerLevel: 0.1,
-  ));
+class _GameScreenState extends State<GameScreen> {
+  int levelIndex = 0;
+  int goldBank = 0;
+  int xpBank = 0;
 
-  manager.registerPrestigeUpgrade(PrestigeUpgrade(
-    id: 'xp_boost',
-    name: 'XP 부스트',
-    description: 'XP 획득량 +15%',
-    maxLevel: 40,
-    costPerLevel: 2,
-    bonusPerLevel: 0.15,
-  ));
+  GameLevelDesign get currentLevel => kLevelDesign[levelIndex];
 
-  manager.registerPrestigeUpgrade(PrestigeUpgrade(
-    id: 'production_speed',
-    name: '생산 속도',
-    description: '생산 속도 +20%',
-    maxLevel: 30,
-    costPerLevel: 2,
-    bonusPerLevel: 0.2,
-  ));
+  void completeAction() {
+    setState(() {
+      goldBank += currentLevel.goldReward;
+      xpBank += currentLevel.xpReward;
+      if (levelIndex < kLevelDesign.length - 1) {
+        levelIndex += 1;
+      }
+    });
+  }
 
-  manager.registerPrestigeUpgrade(PrestigeUpgrade(
-    id: 'starting_resources',
-    name: '초기 자원',
-    description: '초기 자원 +5%',
-    maxLevel: 60,
-    costPerLevel: 1,
-    bonusPerLevel: 0.05,
-  ));
-
-  manager.registerPrestigeUpgrade(PrestigeUpgrade(
-    id: 'offline_income',
-    name: '오프라인 수익',
-    description: '오프라인 수익 +20%',
-    maxLevel: 30,
-    costPerLevel: 3,
-    bonusPerLevel: 0.2,
-  ));
-
-  // ── Prestige Reset Callbacks ────────────────────────────────
-  // TODO: Add game-specific reset callbacks:
-  // manager.registerResetCallback(() {
-  //   if (GetIt.I.isRegistered<ProgressionManager>()) {
-  //     GetIt.I<ProgressionManager>().reset();
-  //   }
-  //   if (GetIt.I.isRegistered<UpgradeManager>()) {
-  //     GetIt.I<UpgradeManager>().reset();
-  //   }
-  // });
+  @override
+  Widget build(BuildContext context) {
+    final level = currentLevel;
+    final spawn = kWaveSpawnTable[levelIndex];
+    return Scaffold(
+      appBar: AppBar(title: const Text('Game Ready')),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 480),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Primary loop: ${MyApp.coreFunLoop}',
+                  key: const ValueKey('primary-loop'),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Level ${level.levelIndex} - ${level.stage}',
+                  key: const ValueKey('level-name'),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Objective: ${level.objective}',
+                  key: const ValueKey('level-objective'),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Wave ${level.wave} | Difficulty ${level.difficulty.toStringAsFixed(2)}',
+                  key: const ValueKey('difficulty-label'),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Pressure: ${spawn.enemyCount} enemies every '
+                  '${spawn.spawnCadenceSeconds.toStringAsFixed(2)}s',
+                  key: const ValueKey('pressure-label'),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                LinearProgressIndicator(
+                  value: (level.levelIndex / kLevelDesign.length).clamp(0.0, 1.0),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Reward bank: $goldBank gold / $xpBank xp',
+                  key: const ValueKey('reward-bank'),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                FilledButton.icon(
+                  key: const ValueKey('complete-action'),
+                  onPressed: completeAction,
+                  icon: const Icon(Icons.check_circle_rounded),
+                  label: const Text('Complete Action'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-void _registerCollections() {
-  final collection = GetIt.I<CollectionManager>();
+class _FrameLoopGame extends FlameGame {
+  double elapsedSeconds = 0;
+  int frameTicks = 0;
 
-  // Characters 컬렉션
-  collection.registerCollection(Collection(
-    id: 'characters',
-    name: '캐릭터',
-    description: '모든 캐릭터를 수집하세요',
-    items: [
-      const CollectionItem(
-        id: 'char_warrior',
-        name: '전사',
-        description: '강인한 근접 전투 캐릭터',
-        rarity: CollectionRarity.common,
-      ),
-      const CollectionItem(
-        id: 'char_mage',
-        name: '마법사',
-        description: '강력한 마법 공격 캐릭터',
-        rarity: CollectionRarity.rare,
-      ),
-      const CollectionItem(
-        id: 'char_archer',
-        name: '궁수',
-        description: '원거리 정밀 공격 캐릭터',
-        rarity: CollectionRarity.rare,
-      ),
-      const CollectionItem(
-        id: 'char_assassin',
-        name: '암살자',
-        description: '치명적인 은신 공격 캐릭터',
-        rarity: CollectionRarity.epic,
-      ),
-      const CollectionItem(
-        id: 'char_healer',
-        name: '힐러',
-        description: '팀을 치유하는 지원 캐릭터',
-        rarity: CollectionRarity.legendary,
-      ),
-    ],
-    completionReward: const CollectionReward(type: RewardType.gold, amount: 10000),
-    milestoneRewards: {
-      25: const CollectionReward(type: RewardType.gold, amount: 1000),
-      50: const CollectionReward(type: RewardType.gold, amount: 3000),
-      75: const CollectionReward(type: RewardType.gold, amount: 5000),
-    },
-  ));
+  @override
+  void update(double dt) {
+    elapsedSeconds += dt;
+    frameTicks += 1;
+    super.update(dt);
+  }
+}
 
-  // 아이템 해제 콜백 (햅틱 피드백)
-  collection.onItemUnlocked = (collectionId, itemId) {
-    // SettingsManager가 등록되어 있으면 햅틱 피드백
-    debugPrint('Collection item unlocked: $collectionId / $itemId');
-  };
+class FrameLoopScreen extends StatelessWidget {
+  const FrameLoopScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Engine Loop')),
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text(
+              'GameWidget frame loop is active for runtime input, update, and render validation.',
+              key: ValueKey('engine-loop-status'),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Expanded(child: GameWidget(game: _FrameLoopGame())),
+        ],
+      ),
+    );
+  }
+}
+
+class LevelRoadmapScreen extends StatelessWidget {
+  const LevelRoadmapScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Level Roadmap')),
+      body: ListView.builder(
+        key: const ValueKey('level-list'),
+        padding: const EdgeInsets.all(16),
+        itemCount: kLevelDesign.length,
+        itemBuilder: (context, index) {
+          final level = kLevelDesign[index];
+          final spawn = kWaveSpawnTable[index];
+          return ListTile(
+            leading: CircleAvatar(child: Text('${level.levelIndex}')),
+            title: Text('Level ${level.levelIndex} - ${level.stage}'),
+            subtitle: Text(
+              'Wave ${level.wave} | difficulty ${level.difficulty.toStringAsFixed(2)} | '
+              '${spawn.enemyCount} enemies | reward ${level.goldReward}g/${level.xpReward}xp',
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class DailyHubScreen extends StatelessWidget {
+  const DailyHubScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _SimpleScreen(
+      title: 'Daily Quests',
+      detail: 'Short goals keep the fun loop moving.',
+      icon: Icons.today_rounded,
+    );
+  }
+}
+
+class RetentionHubScreen extends StatelessWidget {
+  const RetentionHubScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _SimpleScreen(
+      title: 'Rewards',
+      detail: 'Progression loop: return, claim, improve.',
+      icon: Icons.card_giftcard_rounded,
+    );
+  }
+}
+
+class GuildWarScreen extends StatelessWidget {
+  const GuildWarScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _SimpleScreen(
+      title: 'Guild War',
+      detail: 'Social competition is reachable from the main loop.',
+      icon: Icons.groups_rounded,
+    );
+  }
+}
+
+class TournamentScreen extends StatelessWidget {
+  const TournamentScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _SimpleScreen(
+      title: 'Tournament',
+      detail: 'Competitive goals are available for mastery.',
+      icon: Icons.emoji_events_rounded,
+    );
+  }
+}
+
+class SeasonalEventScreen extends StatelessWidget {
+  const SeasonalEventScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const _SimpleScreen(
+      title: 'Seasonal Event',
+      detail: 'Timed content gives the loop a fresh reason to return.',
+      icon: Icons.event_rounded,
+    );
+  }
+}
+
+class _SimpleScreen extends StatelessWidget {
+  const _SimpleScreen({required this.title, required this.detail, required this.icon});
+
+  final String title;
+  final String detail;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(title)),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 56),
+              const SizedBox(height: 16),
+              Text(
+                title,
+                key: const ValueKey('screen-title'),
+                style: Theme.of(context).textTheme.headlineSmall,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(detail, key: const ValueKey('screen-detail'), textAlign: TextAlign.center),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
